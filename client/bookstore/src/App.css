@@ -1,0 +1,30 @@
+/* LoginPage.css */
+.login-container {
+  min-height: 100vh;
+  background: url('/images/book-bg.jpg') no-repeat center center;
+  background-size: cover;
+  background-color: #0d1117; /* fallback for dark theme */
+  padding: 2rem;
+}
+
+.glass-card {
+  background-color: rgba(13, 17, 23, 0.85); /* semi-transparent dark */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+.glass-card .form-label {
+  font-weight: 500;
+}
+
+.glass-card .btn-primary {
+  background-color: #4b8bbe;
+  border: none;
+}
+
+.glass-card .btn-primary:hover {
+  background-color: #3a7db2;
+}
