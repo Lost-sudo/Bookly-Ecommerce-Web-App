@@ -2,8 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 import { Form, Button, Alert, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -18,14 +20,11 @@ const LoginPage = () => {
         "http://localhost:8000/api/auth/login/",
         formData
       );
-      localStorage.setItem("access", response.data.access);
-      localStorage.setItem("refresh", response.data.refresh);
-      localStorage.setItem("authTokens", JSON.stringify(response.data));
+      login(response.data);
       navigate("/");
     } catch (err) {
       setError("Invalid credentials. Please try again.");
       console.log(err);
-      
     }
   };
 

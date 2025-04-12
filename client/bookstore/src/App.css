@@ -28,3 +28,23 @@
 .glass-card .btn-primary:hover {
   background-color: #3a7db2;
 }
+
+
+/* Homepage CSS */
+.search-input {
+  background-color: #2a2a2a;
+  color: #fff;
+  border: none;
+}
+
+.search-input::placeholder {
+  color: #bbb;
+}
+
+.navbar-nav .dropdown-menu {
+  background-color: #212529;
+}
+
+.navbar-nav .dropdown-item:hover {
+  background-color: #343a40;
+}
