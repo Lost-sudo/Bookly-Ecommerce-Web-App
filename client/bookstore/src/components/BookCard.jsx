@@ -1,29 +1,30 @@
-import React from "react";
-import PropTypes from "prop-types";
-import "../../public/css/BookCard.css";
-import PlaceHolderImg from "../../public/images/placeholder-img.jpg";
+import { Card, Button } from "react-bootstrap";
+import { FaStar } from "react-icons/fa";
+import PlaceHolderImage from "../../public/images/placeholder-img.jpg";
 
-
-function BookCard({ title, author, cover }) {
+const BookCard = ({ cover, title, author, price}) => {
   return (
-    <div className="book-card bg-secondary text-white">
-      <div className="book-cover">
-        <img
-          src={cover || PlaceHolderImg}
-          alt={title}
-          className="img-fluid rounded"
-        />
-      </div>
-      <h5 className="mt-2">{title}</h5>
-      <p className="text-muted">{author}</p>
-    </div>
+    <Card className="book-card h-100 shadow rounded-3 border-0">
+      <Card.Img
+        variant="top"
+        src={cover || PlaceHolderImage}
+        className="img-fluid rounded-top"
+      />
+      <Card.Body>
+        <Card.Title className="fw-semibold">{title}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{author}</Card.Subtitle>
+        {/* <div className="mb-2 text-warning d-flex align-items-center gap-1">
+          <FaStar /> {rating}
+        </div> */}
+        <div className="d-flex justify-content-between align-items-center mt-2">
+          <span className="fw-bold text-primary">${price}</span>
+          <Button size="sm" variant="outline-primary">
+            Add
+          </Button>
+        </div>
+      </Card.Body>
+    </Card>
   );
-}
-
-BookCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  cover: PropTypes.string,
 };
 
 export default BookCard;

@@ -2,12 +2,15 @@
   min-width: 180px;
   padding: 1rem;
   border-radius: 12px;
+  background-color: #2b2d2f;
   scroll-snap-align: start;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
 .book-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   background-color: #3c3f41;
 }
 
@@ -16,4 +19,9 @@
   object-fit: cover;
   width: 100%;
   border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover .book-cover img {
+  transform: scale(1.02);
 }

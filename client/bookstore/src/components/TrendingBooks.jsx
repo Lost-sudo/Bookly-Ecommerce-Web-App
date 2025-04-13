@@ -4,13 +4,38 @@ import BookCard from "./BookCard";
 import "../../public/css/TrendingBooks.css";
 
 function TrendingBooks() {
-  const trending = [
-    { title: "The Midnight Library", author: "Matt Haig" },
-    { title: "It Ends With Us", author: "Colleen Hoover" },
-    { title: "Atomic Habits", author: "James Clear" },
-    { title: "The Silent Patient", author: "Alex Michaelides" },
-    { title: "Educated", author: "Tara Westover" },
-  ];
+ const trending = [
+   {
+     title: "The Midnight Library",
+     author: "Matt Haig",
+     price: 12.99,
+     cover: null,
+   },
+   {
+     title: "It Ends With Us",
+     author: "Colleen Hoover",
+     price: 10.49,
+     cover: null,
+   },
+   {
+     title: "Atomic Habits",
+     author: "James Clear",
+     price: 14.99,
+     cover: null,
+   },
+   {
+     title: "The Silent Patient",
+     author: "Alex Michaelides",
+     price: 11.75,
+     cover: null,
+   },
+   {
+     title: "Educated",
+     author: "Tara Westover",
+     price: 13.25,
+     cover: null,
+   },
+ ];
 
   return (
     <section className="scroll-section mt-5">
