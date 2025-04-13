@@ -1,0 +1,31 @@
+.scroll-section .section-title {
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+}
+
+.book-card {
+  min-width: 180px;
+  padding: 1rem;
+  border-radius: 12px;
+  scroll-snap-align: start;
+  transition: transform 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  background-color: #3c3f41;
+}
+
+.book-cover.placeholder {
+  height: 220px;
+  background: #444;
+  border-radius: 8px;
+}

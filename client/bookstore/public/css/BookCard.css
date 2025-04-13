@@ -1,0 +1,19 @@
+.book-card {
+  min-width: 180px;
+  padding: 1rem;
+  border-radius: 12px;
+  scroll-snap-align: start;
+  transition: transform 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  background-color: #3c3f41;
+}
+
+.book-cover img {
+  height: 220px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+}
