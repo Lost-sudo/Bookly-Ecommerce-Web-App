@@ -5,12 +5,16 @@ import {
   NavDropdown,
   Form,
   FormControl,
+  Dropdown,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
-import logo from "../../public/images/bookly-logo.png"; 
+import logo from "../../public/images/bookly-logo.png";
+import { useAuth } from "../context/AuthContext";
 
 function Header() {
+  const { logout } = useAuth();
+
   return (
     <Navbar bg="dark" variant="dark" className="py-3 shadow-sm">
       <Container
@@ -30,13 +34,13 @@ function Header() {
         {/* Center: Dropdowns */}
         <Nav className="d-flex justify-content-center gap-4">
           <NavDropdown title="Fiction" id="fiction-dropdown" menuVariant="dark">
-            <NavDropdown.Item as={Link} to="/genre/fantasy">
+            <NavDropdown.Item as={Link} to="/genre/fiction/fantasy">
               Fantasy
             </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/romance">
+            <NavDropdown.Item as={Link} to="/genre/fiction/romance">
               Romance
             </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/mystery">
+            <NavDropdown.Item as={Link} to="/genre/fiction/mystery">
               Mystery
             </NavDropdown.Item>
           </NavDropdown>
@@ -46,13 +50,13 @@ function Header() {
             id="nonfiction-dropdown"
             menuVariant="dark"
           >
-            <NavDropdown.Item as={Link} to="/genre/biography">
+            <NavDropdown.Item as={Link} to="/genre/non-fiction/biography">
               Biography
             </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/history">
+            <NavDropdown.Item as={Link} to="/genre/non-fiction/history">
               History
             </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/self-help">
+            <NavDropdown.Item as={Link} to="/genre/non-fiction/self-help">
               Self-Help
             </NavDropdown.Item>
           </NavDropdown>
@@ -62,10 +66,10 @@ function Header() {
             id="children-dropdown"
             menuVariant="dark"
           >
-            <NavDropdown.Item as={Link} to="/genre/children-fiction">
+            <NavDropdown.Item as={Link} to="/genre/children/fiction">
               Fiction
             </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/educational">
+            <NavDropdown.Item as={Link} to="/genre/children/educational">
               Educational
             </NavDropdown.Item>
           </NavDropdown>
@@ -84,9 +88,25 @@ function Header() {
           <Link to="/cart" className="text-light fs-5">
             <FaShoppingCart />
           </Link>
-          <Link to="/account" className="text-light fs-5">
-            <FaUser />
-          </Link>
+          <Dropdown align="end">
+            <Dropdown.Toggle
+              variant="link"
+              id="dropdown-account"
+              className="text-light fs-5 p-0 border-0 shadow-none"
+            >
+              <FaUser />
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu className="dropdown-menu-dark">
+              <Dropdown.Item as={Link} to="/profile">
+                Profile
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/orders">
+                Orders
+              </Dropdown.Item>
+              <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </Container>
     </Navbar>

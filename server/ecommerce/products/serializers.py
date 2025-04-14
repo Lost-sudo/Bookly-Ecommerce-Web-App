@@ -12,5 +12,5 @@ class BookCustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'description', 'price', 'category', 'cover_image']
+        fields = ['id', 'title', 'author', 'description', 'price', 'category', 'genre', 'subgenre', 'cover_image']
         read_only_fields = ['id']

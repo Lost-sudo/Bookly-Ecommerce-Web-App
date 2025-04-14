@@ -10,8 +10,8 @@ class BookViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookCustomerSerializer
     permission_classes = [isCustomer]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['category__name', 'price']
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['genre', 'sub_genre', 'category']
     search_fields = ['title', 'author', 'description']
 
 class BookAdminViewSet(viewsets.ModelViewSet):

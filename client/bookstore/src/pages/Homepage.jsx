@@ -1,13 +1,11 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { useAuth } from "../context/AuthContext";
 import HeroSection from "../components/HeroSection";
 import TrendingBooks from "../components/TrendingBooks";
 import SidebarFilter from "../components/FilterSidebar";
 import AllBooks from "../components/AllBooks";
 
 const Homepage = () => {
-  const { logout } = useAuth();
 
   return (
     <>
@@ -28,9 +26,6 @@ const Homepage = () => {
         </Container>
       </div>
 
-      <Button onClick={logout} variant="danger" className="m-3">
-        Logout
-      </Button>
     </>
   );
 };
