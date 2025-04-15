@@ -8,7 +8,8 @@ const BookCard = ({ cover, title, author, price}) => {
       <Card.Img
         variant="top"
         src={cover || PlaceHolderImage}
-        className="img-fluid rounded-top"
+        className="img-fluid rounded-top d-block mx-auto"
+        style={{ height: '300px', width: '300px' }}
       />
       <Card.Body>
         <Card.Title className="fw-semibold">{title}</Card.Title>
@@ -17,7 +18,7 @@ const BookCard = ({ cover, title, author, price}) => {
           <FaStar /> {rating}
         </div> */}
         <div className="d-flex justify-content-between align-items-center mt-2">
-          <span className="fw-bold text-primary">${price}</span>
+          <span className="fw-bold text-primary">{price}</span>
           <Button size="sm" variant="outline-primary">
             Add
           </Button>

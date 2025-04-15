@@ -6,4 +6,4 @@ class isAdmin(BasePermission):
     
 class isCustomer(BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role == 'customer'
+        return request.user and request.user.is_authenticated and request.user.role == 'customer'

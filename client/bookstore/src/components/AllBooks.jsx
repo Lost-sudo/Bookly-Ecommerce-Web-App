@@ -1,35 +1,35 @@
+import React, { useEffect, useState } from "react";
 import { Row, Col, ButtonGroup, Button } from "react-bootstrap";
 import BookCard from "./BookCard";
 import { FaTh, FaBars } from "react-icons/fa";
-
-const books = [
-  {
-    title: "The Midnight Library",
-    author: "Matt Haig",
-    price: 19.99,
-    rating: 4.7,
-  },
-  {
-    title: "Klara and the Sun",
-    author: "Kazuo Ishiguro",
-    price: 24.99,
-    rating: 4.5,
-  },
-  {
-    title: "Project Hail Mary",
-    author: "Andy Weir",
-    price: 22.99,
-    rating: 4.8,
-  },
-  {
-    title: "The Four Winds",
-    author: "Kristin Hannah",
-    price: 18.99,
-    rating: 4.6,
-  },
-];
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const AllBooks = () => {
+  const [books, setBooks] = useState([]);
+  const { authTokens } = useAuth();
+  const token = authTokens?.access;
+
+
+  useEffect(() => {
+      if (!token) return;
+    const fetchBooks = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/books/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setBooks(res.data);
+      } catch (error) {
+        console.error("Error fetching books:", error);
+      }
+    };
+
+    fetchBooks();
+  }, [token]);
+
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -47,7 +47,12 @@ const AllBooks = () => {
       <Row xs={1} sm={2} md={3} lg={4} className="g-4">
         {books.map((book, index) => (
           <Col key={index}>
-            <BookCard {...book} />
+            <BookCard
+                cover={book.cover_image}
+                title={book.title}
+                author={book.author}
+                price={book.price}
+             />
           </Col>
         ))}
       </Row>

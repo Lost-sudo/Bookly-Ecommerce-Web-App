@@ -21,6 +21,7 @@ const LoginPage = () => {
         formData
       );
       login(response.data);
+      console.log("Login response:", response.data);
       navigate("/");
     } catch (err) {
       setError("Invalid credentials. Please try again.");
