@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets, filters
 from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Book
 from accounts.permissions import isAdmin, isCustomer
@@ -15,7 +16,13 @@ class BookViewSet(viewsets.ReadOnlyModelViewSet):
     filterset_fields = ['genre', 'sub_genre', 'category']
     search_fields = ['title', 'author', 'description']
 
+    @action(detail=False, methods=['get'], url_path='trending')
+    def trending_books(self, request):
+        queryset = Book.objects.filter(category__isnull=False).order_by('-created_at')[:10]
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 class BookAdminViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookAdminSerializer
-    permission_classes = [IsAuthenticated, isAdmin]
+    permission_classes = [isAdmin]

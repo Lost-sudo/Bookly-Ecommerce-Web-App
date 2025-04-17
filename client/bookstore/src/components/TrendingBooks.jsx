@@ -1,52 +1,37 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Container } from "react-bootstrap";
 import BookCard from "./BookCard";
 import "../../public/css/TrendingBooks.css";
+import axios from "axios";
 
 function TrendingBooks() {
- const trending = [
-   {
-     title: "The Midnight Library",
-     author: "Matt Haig",
-     price: 12.99,
-     cover: null,
-   },
-   {
-     title: "It Ends With Us",
-     author: "Colleen Hoover",
-     price: 10.49,
-     cover: null,
-   },
-   {
-     title: "Atomic Habits",
-     author: "James Clear",
-     price: 14.99,
-     cover: null,
-   },
-   {
-     title: "The Silent Patient",
-     author: "Alex Michaelides",
-     price: 11.75,
-     cover: null,
-   },
-   {
-     title: "Educated",
-     author: "Tara Westover",
-     price: 13.25,
-     cover: null,
-   },
- ];
+ const [trending, setTrending] = useState([]);
+
+ useEffect(() => {
+        const fetchTrendingBooks = async () => {
+            try {
+                const res = await axios.get("http://localhost:8000/api/books/trending/");
+                setTrending(res.data);
+            } catch (error) {
+                console.error("Error fetching trending books: ", error);
+            }
+        };
+    fetchTrendingBooks();
+
+ }, []);
 
   return (
     <section className="scroll-section mt-5">
       <Container>
         <h2 className="section-title text-light">Trending Books</h2>
         <div className="scroll-container">
-          {trending.map((book, idx) => (
+          {trending.map((book, index) => (
             <BookCard
-              key={idx}
+              key={index}
               title={book.title}
               author={book.author}
+              price={book.price}
+              cover={book.cover_image}
             />
           ))}
         </div>

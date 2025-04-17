@@ -3,23 +3,15 @@ import { Row, Col, ButtonGroup, Button } from "react-bootstrap";
 import BookCard from "./BookCard";
 import { FaTh, FaBars } from "react-icons/fa";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
 
 const AllBooks = () => {
   const [books, setBooks] = useState([]);
-  const { authTokens } = useAuth();
-  const token = authTokens?.access;
 
 
   useEffect(() => {
-      if (!token) return;
     const fetchBooks = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/books/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axios.get("http://localhost:8000/api/books/");
 
         setBooks(res.data);
       } catch (error) {
@@ -28,7 +20,7 @@ const AllBooks = () => {
     };
 
     fetchBooks();
-  }, [token]);
+  }, []);
 
   return (
     <div>

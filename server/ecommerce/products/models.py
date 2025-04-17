@@ -23,7 +23,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     author = models.CharField(max_length=255)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True)
     sub_genre = models.ForeignKey(SubGenre, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
