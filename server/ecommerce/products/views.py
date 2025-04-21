@@ -7,13 +7,16 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Book
 from accounts.permissions import isAdmin, isCustomer
 from .serializers import BookAdminSerializer, BookCustomerSerializer
+from .filters import BookFilter
+
+
 
 class BookViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookCustomerSerializer
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['genre', 'sub_genre', 'category']
+    filterset_class = BookFilter
     search_fields = ['title', 'author', 'description']
 
     @action(detail=False, methods=['get'], url_path='trending')

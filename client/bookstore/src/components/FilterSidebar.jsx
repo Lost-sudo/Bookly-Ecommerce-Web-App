@@ -1,7 +1,52 @@
 import { Accordion, Form } from "react-bootstrap";
 import { FaFilter } from "react-icons/fa";
 
-const FilterSidebar = () => {
+const FilterSidebar = ({
+  selectedGenres,
+  setSelectedGenres,
+  selectedAuthors,
+  setSelectedAuthors,
+}) => {
+  const genres = [
+    "Fiction",
+    "Non-Fiction",
+    "Science Fiction",
+    "Fantasy",
+    "Mystery",
+    "Romance",
+    "Thriller",
+    "Biography",
+    "Self-Help",
+    "History",
+  ];
+
+  const authors = [
+    "J.K. Rowling",
+    "Stephen King",
+    "Agatha Christie",
+    "James Patterson",
+    "George R.R. Martin",
+    "J.R.R. Tolkien",
+    "John Grisham",
+    "Dan Brown",
+  ];
+
+  const handleGenreChange = (genre) => {
+    setSelectedGenres((prev) =>
+      prev.includes(genre)
+        ? prev.filter((g) => g !== genre)
+        : [...prev, genre]
+    );
+  };
+
+  const handleAuthorChange = (author) => {
+    setSelectedAuthors((prev) =>
+      prev.includes(author)
+        ? prev.filter((a) => a !== author)
+        : [...prev, author]
+    );
+  };
+
   return (
     <div
       className="bg-dark text-light p-3 rounded shadow"
@@ -14,51 +59,31 @@ const FilterSidebar = () => {
         <Accordion.Item eventKey="0" className="bg-dark text-light">
           <Accordion.Header>Genres</Accordion.Header>
           <Accordion.Body className="bg-dark text-light">
-            {[
-              "Fiction",
-              "Non-Fiction",
-              "Science Fiction",
-              "Fantasy",
-              "Mystery",
-              "Romance",
-              "Thriller",
-              "Biography",
-              "Self-Help",
-              "History",
-            ].map((genre) => {
-              return (
-                <Form.Check
-                  key={genre}
-                  label={genre}
-                  type="checkbox"
-                  className="text-light mb-2"
-                />
-              );
-            })}
+            {genres.map((genre) => (
+              <Form.Check
+                key={genre}
+                label={genre}
+                type="checkbox"
+                className="text-light mb-2"
+                checked={selectedGenres.includes(genre)}
+                onChange={() => handleGenreChange(genre)}
+              />
+            ))}
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="1" className="bg-dark text-light">
           <Accordion.Header>Authors</Accordion.Header>
           <Accordion.Body className="bg-dark text-light">
-            {[
-              "J.K. Rowling",
-              "Stephen King",
-              "Agatha Christie",
-              "James Patterson",
-              "George R.R. Martin",
-              "J.R.R. Tolkien",
-              "John Grisham",
-              "Dan Brown",
-            ].map((author) => {
-              return (
-                <Form.Check
-                  key={author}
-                  label={author}
-                  type="checkbox"
-                  className="text-light mb-2"
-                />
-              );
-            })}
+            {authors.map((author) => (
+              <Form.Check
+                key={author}
+                label={author}
+                type="checkbox"
+                className="text-light mb-2"
+                checked={selectedAuthors.includes(author)}
+                onChange={() => handleAuthorChange(author)}
+              />
+            ))}
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>

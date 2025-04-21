@@ -1,5 +1,4 @@
 import { Container, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -11,7 +10,16 @@ const HeroSection = () => {
         <p className="lead mt-3 mb-4">
           Browse genres, find bestsellers, and explore endless stories.
         </p>
-        <Button as={Link} to="/" variant="primary" size="lg" className="mt-3">
+        <Button
+          onClick={() => {
+            document
+              .getElementById("all-books")
+              ?.scrollIntoView({ behavior: "smooth" });
+          }}
+          variant="primary"
+          size="lg"
+          className="mt-3"
+        >
           Explore Books
         </Button>
       </Container>

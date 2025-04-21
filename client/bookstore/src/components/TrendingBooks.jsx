@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Container } from "react-bootstrap";
 import BookCard from "./BookCard";
 import "../../public/css/TrendingBooks.css";
+import "../../public/css/BookCard.css";
 import axios from "axios";
 
 function TrendingBooks() {

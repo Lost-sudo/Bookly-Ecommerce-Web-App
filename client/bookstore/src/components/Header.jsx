@@ -7,13 +7,21 @@ import {
   FormControl,
   Dropdown,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import logo from "../../public/images/bookly-logo.png";
 import { useAuth } from "../context/AuthContext";
 
 function Header() {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(`/?search=${encodeURIComponent(searchTerm)}`);
+  }
 
   return (
     <Navbar bg="dark" variant="dark" className="py-3 shadow-sm">
@@ -75,14 +83,15 @@ function Header() {
           </NavDropdown>
         </Nav>
 
-        {/* Right: Search + Icons */}
         <div className="d-flex align-items-center gap-3">
-          <Form className="d-flex">
+          <Form className="d-flex" onSubmit={handleSearch}>
             <FormControl
               type="search"
               placeholder="Search books..."
               className="me-2 search-input"
               aria-label="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </Form>
           <Link to="/cart" className="text-light fs-5">

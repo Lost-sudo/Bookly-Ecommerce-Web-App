@@ -11,7 +11,12 @@
   scroll-snap-type: x mandatory;
 }
 
-.book-card {
+.scroll-container > * {
+  flex: 0 0 auto;
+}
+
+
+/* .book-card {
   min-width: 180px;
   padding: 1rem;
   border-radius: 12px;
@@ -28,4 +33,5 @@
   height: 220px;
   background: #444;
   border-radius: 8px;
-}
+} */
+
