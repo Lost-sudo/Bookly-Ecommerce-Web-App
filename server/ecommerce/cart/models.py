@@ -3,9 +3,10 @@ from django.conf import settings
 from django.db.models import F
 from products.models import Book
 from decimal import Decimal
+from rest_framework.exceptions import ValidationError
 
 class Cart(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='cart')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -39,5 +40,5 @@ class CartItem(models.Model):
 
     def save(self, *args, **kwargs):
         if self.quantity <= 0:
-            raise ValueError("Quantity cannot be zero or negative.")
+            raise ValidationError("Quantity cannot be zero or negative.")
         super().save(*args, **kwargs)

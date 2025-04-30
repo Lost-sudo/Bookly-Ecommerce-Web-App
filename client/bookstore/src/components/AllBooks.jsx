@@ -26,7 +26,6 @@ const AllBooks = () => {
         setBooks(res);
         setFilteredBooks(res);
         console.log(filteredBooks);
-        
       } catch (error) {
         console.error("Error fetching books:", error);
       }
@@ -55,7 +54,6 @@ const AllBooks = () => {
           book.author.toLowerCase().includes(searchTerm)
       );
     }
-
 
     setFilteredBooks(filtered);
   }, [selectedGenres, selectedAuthors, books, searchTerm]);
@@ -88,10 +86,12 @@ const AllBooks = () => {
           {filteredBooks.map((book, index) => (
             <Col key={index}>
               <BookCard
-                cover={book.cover_image}
+                key={index}
+                id={book.id}
                 title={book.title}
                 author={book.author}
                 price={book.price}
+                cover={book.cover_image}
               />
             </Col>
           ))}

@@ -1,4 +1,3 @@
-from django.forms import ValidationError
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Order
@@ -6,6 +5,7 @@ from .serializers import OrderSerializer
 from rest_framework.permissions import IsAuthenticated
 from accounts.permissions import isCustomer
 from cart.models import Cart, CartItem
+from rest_framework.exceptions import ValidationError
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
@@ -18,24 +18,29 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Order.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer):
-        cart = Cart.objects.get(user=self.request.user)
-        if not cart:
-            raise ValidationError("Cart is empty. Add items to the cart before placing an order.")
-        
-        cart_items = CartItem.objects.filter(cart=cart)
+        user = self.request.user
 
-        if not cart_items.exists():
-            raise ValidationError("Cart is empty. Add items to the cart before placing an order.")
-        
-        total_amount = cart.calculate_total()
-
-        amount_paid = self.request.data.get('payment_amount')
         try:
-            amount_paid = float(amount_paid)
-        except(TypeError, ValueError):
-            raise ValidationError("Invalid payment amount.")
+            cart = Cart.objects.get(user=user)
+        except Cart.DoesNotExist:
+            raise ValidationError("Cart does not exist.")
         
-        if amount_paid < total_amount:
-            raise ValidationError("Insufficient payment amount.")
+        cart_items = cart.items.all()
+        if not cart_items.exists():
+            raise ValidationError("Cart is empty. Cannot create order.")
         
-        serializer.save(user=self.request.user, cart=cart, total_amount=total_amount, order_status='pending')
+        total_price = sum(item.book.price * item.quantity for item in cart_items)
+
+        order = serializer.save(
+            user=user,
+            total_amount=total_price,
+            cart=cart,
+            order_status='pending',
+            payment_type=self.request.data.get("payment_type"),
+            transaction_id=self.request.data.get("transaction_id")
+        )
+
+        cart.clear_cart()
+
+
+

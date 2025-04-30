@@ -29,6 +29,7 @@ function TrendingBooks() {
           {trending.map((book, index) => (
             <BookCard
               key={index}
+              id={book.id}
               title={book.title}
               author={book.author}
               price={book.price}
