@@ -1,6 +1,4 @@
-Great! Since you’ve completed the **user order history** feature, here’s an updated version of the `README.md` with that reflected in the relevant sections:
 
----
 
 ```markdown
 # 🛍️ Django E-Commerce Ordering System
@@ -228,7 +226,3 @@ This project is licensed under the **MIT License**.
 
 ---
 ```
-
----
-
-Let me know if you’d like to also reflect changes in the endpoint descriptions, API documentation, or test coverage.
