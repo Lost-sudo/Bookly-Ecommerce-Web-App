@@ -1,4 +1,4 @@
-Here's a **comprehensive, copy-paste–ready `README.md`** file for your Django E-commerce Order System project. It includes full details on setup, functionality, models (including custom user), and notes that the project is incomplete.
+Great! Since you’ve completed the **user order history** feature, here’s an updated version of the `README.md` with that reflected in the relevant sections:
 
 ---
 
@@ -78,7 +78,7 @@ from decimal import Decimal
 from rest_framework.exceptions import ValidationError
 
 class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def calculate_total(self):
@@ -115,9 +115,11 @@ from .serializers import OrderSerializer
 from cart.models import Cart
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user).order_by('-created_at')
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -145,6 +147,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 - ✅ Cart item validation
 - ✅ Prevent multiple orders per cart
 - ✅ Order total auto-calculation
+- ✅ User order history (list past orders)
 - ✅ Permissions for customer-only access
 - 🚫 No payment integration yet
 - 🚫 No admin dashboard
@@ -188,9 +191,9 @@ class OrderViewSet(viewsets.ModelViewSet):
 ## 🛠 API Endpoints (Sample)
 
 - `POST /api/cart/add/` – Add book to cart
-- `GET /api/cart/` – View cart
+- `GET /api/cart/` – View current user's cart
 - `POST /api/orders/` – Place an order
-- `GET /api/orders/` – View user’s orders
+- `GET /api/orders/` – View authenticated user's order history
 
 ---
 
@@ -206,7 +209,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 ## ✅ Future Plans
 
 - [ ] Payment gateway integration (e.g., Stripe)
-- [ ] User order history views
+- [x] User order history views ✅
 - [ ] Admin order management
 - [ ] Frontend interface (React)
 - [ ] Unit & integration tests
@@ -224,7 +227,8 @@ This project is licensed under the **MIT License**.
 **🚧 This project is incomplete. Development is ongoing. Not ready for production use.**
 
 ---
-
 ```
 
-Would you like this as a downloadable file or integrated into your repo automatically?
+---
+
+Let me know if you’d like to also reflect changes in the endpoint descriptions, API documentation, or test coverage.
