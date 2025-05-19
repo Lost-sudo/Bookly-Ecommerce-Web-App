@@ -15,6 +15,8 @@ import "./App.css";
 import CheckOutPage from "./pages/CheckOutPage";
 import ProfilePage from "./pages/ProfilePage";
 import OrdersPage from "./pages/OrdersPage";
+import BookDetails from "./pages/BookDetails";
+import CartPage from "./pages/CartPage";
 
 function App() {
   const router = createBrowserRouter(
@@ -53,10 +55,18 @@ function App() {
           }
         />
         <Route
-          path="/cart"
+          path="/checkout"
           element={
             <PrivateRoute>
               <CheckOutPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <PrivateRoute>
+              <CartPage />
             </PrivateRoute>
           }
         />
@@ -73,6 +83,14 @@ function App() {
           element={
             <PrivateRoute>
               <OrdersPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/book/:id"
+          element={
+            <PrivateRoute>
+              <BookDetails />
             </PrivateRoute>
           }
         />

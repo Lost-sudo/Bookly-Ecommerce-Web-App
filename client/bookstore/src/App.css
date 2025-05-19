@@ -1,7 +1,7 @@
 /* LoginPage.css */
 .login-container {
   min-height: 100vh;
-  background: url('/images/book-bg.jpg') no-repeat center center;
+  background: url("/images/book-bg.jpg") no-repeat center center;
   background-size: cover;
   background-color: #0d1117; /* fallback for dark theme */
   padding: 2rem;
@@ -29,7 +29,6 @@
   background-color: #3a7db2;
 }
 
-
 /* Homepage CSS */
 .search-input {
   background-color: #2a2a2a;
@@ -47,4 +46,329 @@
 
 .navbar-nav .dropdown-item:hover {
   background-color: #343a40;
+}
+
+/* Global Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Smooth Page Transitions */
+.page-transition {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Page Transition */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+/* Loading Spinner Styles */
+.loading-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, #1a1a1a, #2a2a2a, #1a1a1a);
+  background-size: 200% 200%;
+  animation: gradient 2s ease infinite;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(75, 139, 190, 0.3);
+  border-radius: 50%;
+  border-top-color: #4b8bbe;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Enhanced Button Transitions */
+.btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Card Hover Effects */
+.card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backface-visibility: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b8bbe;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #357abd;
+}
+
+/* Toast Notifications */
+.toast {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Better Mobile Responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .navbar-brand img {
+    height: 30px;
+  }
+
+  .hero-section {
+    padding: 2rem 0;
+  }
+
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+}
+
+/* Modern Form Styles */
+.form-control {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+}
+
+.form-control:focus {
+  border-color: #4b8bbe;
+  box-shadow: 0 0 0 0.2rem rgba(75, 139, 190, 0.25);
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+/* Glass Effect for Cards */
+.glass-effect {
+  background: rgba(33, 37, 41, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Order Page Specific Styles */
+.order-items {
+  background: rgba(33, 37, 41, 0.4);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  transition: all 0.3s ease;
+}
+
+.order-items .row {
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.order-items .row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.order-card {
+  transition: all 0.3s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.order-item {
+  padding: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.order-item:hover {
+  background: rgba(75, 139, 190, 0.1);
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .order-items {
+    padding: 1rem;
+  }
+
+  .order-items .row {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+
+  .order-item {
+    padding: 0.75rem;
+  }
+
+  .badge {
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Checkout Page Specific Styles */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.payment-method-card {
+  transition: all 0.3s ease;
+}
+
+.payment-method-card:hover {
+  border-color: #4b8bbe !important;
+}
+
+.payment-method-card.selected {
+  border-color: #4b8bbe !important;
+  background-color: rgba(75, 139, 190, 0.1) !important;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 768px) {
+  .sticky-top {
+    position: relative !important;
+    top: 0 !important;
+  }
+}
+
+/* Cart Icon Styles */
+.cart-icon-wrapper {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cart-icon-wrapper:hover {
+  color: #4b8bbe;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #4b8bbe;
+  color: white;
+  border-radius: 50%;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Enhanced Navigation Item Hover Effects */
+.nav-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #4b8bbe;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
 }

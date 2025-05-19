@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col, Button } from "react-bootstrap";
+import { Container, Card, Row, Col, Button, Form } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaShoppingBag, FaTruck, FaCreditCard, FaTimes, FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
+import CustomAlert from "../components/CustomAlert";
+import { useAlert } from "../hooks/useAlert";
 
 const shipping = 5.0;
 
@@ -9,69 +14,60 @@ const CheckOutPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [loading, setLoading] = useState(false);
+  const [alert, showAlert, setAlert] = useAlert();
   const { authTokens } = useAuth();
+  const navigate = useNavigate();
+
+  // Form state
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phoneNumber: "",
+    address: ""
+  });
 
   useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const res = await axios.get("http://localhost:8000/api/cart-items/", {
-          headers: {
-            Authorization: `Bearer ${authTokens.access}`,
-          },
-        });
-        setCartItems(res.data);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-    if (authTokens) {
-      fetchCartItems();
-    }
+    fetchCartItems();
   }, [authTokens]);
 
-  const handleQuantityChange = async (id, delta) => {
-    const item = cartItems.find((item) => item.id === id);
-    if (!item) return;
-
-    const newQuantity = item.quantity + delta;
-    if (newQuantity < 1) return;
-
+  const fetchCartItems = async () => {
     try {
-      const res = await axios.patch(
-        `http://localhost:8000/api/cart-items/${id}/`,
-        { quantity: newQuantity },
-        {
-          headers: {
-            Authorization: `Bearer ${authTokens.access}`,
-          },
-        }
-      );
-
-      setCartItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === id
-            ? { ...item, quantity: res.data.quantity } // updated quantity
-            : item
-        )
-      );
+      const res = await axios.get("http://localhost:8000/api/cart-items/", {
+        headers: { Authorization: `Bearer ${authTokens.access}` },
+      });
+      if (res.data.length === 0) {
+        showAlert("Your cart is empty", "warning");
+        setTimeout(() => navigate("/cart"), 2000);
+        return;
+      }
+      setCartItems(res.data);
     } catch (error) {
-      console.error("Failed to update quantity:", error);
+      showAlert("Could not load your cart items. Please try again.", "error");
     }
   };
 
-  const handleRemoveItem = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8000/api/cart-items/${id}/`, {
-        headers: {
-          Authorization: `Bearer ${authTokens.access}`,
-        },
-      });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-      // Update frontend state after successful deletion
-      setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Failed to remove item:", error);
+  const validateForm = () => {
+    if (!formData.fullName.trim()) {
+      showAlert("Please enter your full name", "error");
+      return false;
     }
+    if (!formData.phoneNumber.trim()) {
+      showAlert("Please enter your phone number", "error");
+      return false;
+    }
+    if (!formData.address.trim()) {
+      showAlert("Please enter your address", "error");
+      return false;
+    }
+    return true;
   };
 
   const subtotal = cartItems.reduce(
@@ -80,174 +76,295 @@ const CheckOutPage = () => {
   );
   const total = subtotal + shipping;
 
-  const handleProceedToCheckout = async () => {
-    setShowConfirmation(true);
-  };
-
   const confirmCheckout = async () => {
+    if (!validateForm()) return;
+    
+    setLoading(true);
     const transactionID = `TXN-${Math.floor(100000 + Math.random() * 900000)}`;
 
     try {
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:8000/api/orders/",
         {
           payment_amount: total,
           payment_type: paymentMethod,
           transaction_id: transactionID,
+          shipping_address: formData.address,
+          contact_number: formData.phoneNumber,
+          full_name: formData.fullName
         },
         {
-          headers: {
-            Authorization: `Bearer ${authTokens.access}`,
-          },
+          headers: { Authorization: `Bearer ${authTokens.access}` },
         }
       );
-      alert("Order placed successfully!");
+
+      showAlert("🎉 Order placed successfully! Redirecting to orders...", "success");
       setCartItems([]);
       setShowConfirmation(false);
-      return res.data;
+      setTimeout(() => navigate("/orders"), 2000);
     } catch (error) {
-      console.error("Error placing order:", error);
-      const msg =
-        error.response?.data?.detail ||
+      const errorMessage = error.response?.data?.detail ||
         error.response?.data?.message ||
         error.response?.data ||
         "An unexpected error occurred. Please try again.";
-      alert(msg);
+      showAlert(errorMessage, "error");
       setShowConfirmation(false);
+    } finally {
+      setLoading(false);
     }
-
   };
 
   return (
-    <Container className="text-light py-5">
-      <h2 className="mb-4 text-primary">Your Cart</h2>
-      <Row>
-        {/* Cart Items */}
-        <Col lg={8}>
-          {cartItems.map((item) => (
-            <Card key={item.id} className="...">
-              <Card.Body className="d-flex align-items-center">
-                <div className="flex-grow-1">
-                  <Card.Title className="mb-1">{item.book.title}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    {item.book.author}
-                  </Card.Subtitle>
-                  <div className="d-flex align-items-center gap-2">
-                    <Button
-                      variant="outline-light"
-                      size="sm"
-                      onClick={() => handleQuantityChange(item.id, -1)}
-                    >
-                      −
-                    </Button>
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      className="form-control w-auto bg-dark text-light border border-light text-center"
-                      readOnly
+    <Container className="py-5 text-light">
+      <CustomAlert
+        show={alert.show}
+        message={alert.message}
+        type={alert.type}
+        onClose={() => setAlert(prev => ({ ...prev, show: false }))}
+      />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2 className="text-primary mb-0">
+            <FaShoppingBag className="me-2" />
+            Checkout
+          </h2>
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={() => navigate("/cart")}
+          >
+            <FaArrowLeft className="me-2" />
+            Back to Cart
+          </Button>
+        </div>
+
+        <Row>
+          <Col lg={8}>
+            <Card className="bg-dark border border-primary glass-effect rounded-3 shadow-sm mb-4">
+              <Card.Body>
+                <h5 className="text-primary mb-4">
+                  <FaTruck className="me-2" />
+                  Shipping Details
+                </h5>
+                <Form>
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Full Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="fullName"
+                          value={formData.fullName}
+                          onChange={handleInputChange}
+                          className="bg-dark text-light border-secondary"
+                          placeholder="Enter your full name"
+                          required
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Phone Number</Form.Label>
+                        <Form.Control
+                          type="tel"
+                          name="phoneNumber"
+                          value={formData.phoneNumber}
+                          onChange={handleInputChange}
+                          className="bg-dark text-light border-secondary"
+                          placeholder="Enter your phone number"
+                          required
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      className="bg-dark text-light border-secondary"
+                      placeholder="Enter your complete address"
+                      required
                     />
-                    <Button
-                      variant="outline-light"
-                      size="sm"
-                      onClick={() => handleQuantityChange(item.id, 1)}
-                    >
-                      +
-                    </Button>
-                    <span className="fw-bold text-primary ms-3">
-                      P{(item.book.price * item.quantity).toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-                <Button
-                  variant="outline-danger"
-                  size="sm"
-                  className="ms-3"
-                  onClick={() => handleRemoveItem(item.id)}
-                >
-                  Remove
-                </Button>
+                  </Form.Group>
+                </Form>
               </Card.Body>
             </Card>
-          ))}
-        </Col>
 
-        {/* Summary */}
-        <Col lg={4}>
-          <Card
-            className="bg-dark text-light rounded-3 border border-primary shadow"
-            style={{ top: "80px", position: "sticky" }}
-          >
-            <Card.Body>
-              <h5 className="fw-semibold text-primary">Summary</h5>
-              <hr className="border-light" />
-              <div className="d-flex justify-content-between">
-                <span>Subtotal</span>
-                <span>P{subtotal.toFixed(2)}</span>
-              </div>
-              <div className="d-flex justify-content-between">
-                <span>Shipping</span>
-                <span>P{shipping.toFixed(2)}</span>
-              </div>
-              <hr className="border-light" />
-              <div className="d-flex justify-content-between fw-bold">
-                <span>Total</span>
-                <span>P{total.toFixed(2)}</span>
-              </div>
-              <Button
-                variant="primary"
-                className="w-100 mt-3"
-                onClick={handleProceedToCheckout}
-              >
-                Proceed to Checkout
-              </Button>
-
-              {showConfirmation && (
-                <div className="modal d-block" tabIndex="-1">
-                  <div className="modal-dialog">
-                    <div className="modal-content bg-dark text-light">
-                      <div className="modal-header">
-                        <h5 className="modal-title">Confirm Checkout</h5>
-                        <button
-                          type="button"
-                          className="btn-close"
-                          onClick={() => setShowConfirmation(false)}
-                        ></button>
-                      </div>
-                      <div className="modal-body">
-                        <p>Payment Type:</p>
-                        <select
-                          className="form-select"
-                          value={paymentMethod}
-                          onChange={(e) => setPaymentMethod(e.target.value)}
-                        >
-                          <option value="cash">Cash</option>
-                          <option value="credit_card">Credit Card</option>
-                          <option value="paypal">Paypal</option>
-                        </select>
-                        <p className="mt-3">
-                          Are you sure you want to place the order?
-                        </p>
-                      </div>
-                      <div className="modal-footer">
-                        <Button
-                          variant="secondary"
-                          onClick={() => setShowConfirmation(false)}
-                        >
-                          Cancel
-                        </Button>
-                        <Button variant="primary" onClick={confirmCheckout}>
-                          Confirm
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
+            <Card className="bg-dark border border-primary glass-effect rounded-3 shadow-sm mb-4">
+              <Card.Body>
+                <h5 className="text-primary mb-4">
+                  <FaCreditCard className="me-2" />
+                  Payment Method
+                </h5>
+                <div className="d-flex gap-3 flex-wrap">
+                  {["cash", "credit_card", "paypal"].map((method) => (
+                    <motion.div
+                      key={method}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Card
+                        className={`bg-dark border ${
+                          paymentMethod === method
+                            ? "border-primary"
+                            : "border-secondary"
+                        } rounded-3 cursor-pointer`}
+                        onClick={() => setPaymentMethod(method)}
+                        style={{ minWidth: "120px" }}
+                      >
+                        <Card.Body className="text-center p-3">
+                          <i className={`fab fa-${method} fa-2x mb-2`}></i>
+                          <p className="mb-0 text-capitalize">
+                            {method.replace("_", " ")}
+                          </p>
+                        </Card.Body>
+                      </Card>
+                    </motion.div>
+                  ))}
                 </div>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col lg={4}>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Card
+                className="bg-dark border border-primary glass-effect rounded-3 shadow-sm sticky-top"
+                style={{ top: "2rem" }}
+              >
+                <Card.Body>
+                  <h5 className="text-primary mb-4">Order Summary</h5>
+                  {cartItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="d-flex justify-content-between align-items-center mb-3"
+                    >
+                      <small className="text-muted">
+                        {item.book.title} × {item.quantity}
+                      </small>
+                      <span>
+                        ₱{(item.book.price * item.quantity).toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+                  <hr className="border-secondary" />
+                  <div className="d-flex justify-content-between mb-2">
+                    <span className="text-muted">Subtotal</span>
+                    <span>₱{subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="d-flex justify-content-between mb-3">
+                    <span className="text-muted">Shipping</span>
+                    <span>₱{shipping.toFixed(2)}</span>
+                  </div>
+                  <hr className="border-secondary" />
+                  <div className="d-flex justify-content-between mb-4">
+                    <span className="fw-bold">Total</span>
+                    <span className="fw-bold text-primary fs-5">
+                      ₱{total.toFixed(2)}
+                    </span>
+                  </div>
+                  <Button
+                    variant="primary"
+                    className="w-100 py-2"
+                    onClick={() => setShowConfirmation(true)}
+                    disabled={loading || cartItems.length === 0}
+                  >
+                    {loading ? (
+                      <span className="spinner-border spinner-border-sm me-2" />
+                    ) : null}
+                    Place Order
+                  </Button>
+                </Card.Body>
+              </Card>
+            </motion.div>
+          </Col>
+        </Row>
+      </motion.div>
+
+      {/* Confirmation Modal */}
+      <AnimatePresence>
+        {showConfirmation && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="modal d-block"
+            style={{ background: "rgba(0,0,0,0.5)" }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="modal-dialog modal-dialog-centered"
+            >
+              <div className="modal-content bg-dark text-light border border-primary">
+                <div className="modal-header border-bottom border-secondary">
+                  <h5 className="modal-title">Confirm Order</h5>
+                  <Button
+                    variant="link"
+                    className="p-0 text-light"
+                    onClick={() => setShowConfirmation(false)}
+                  >
+                    <FaTimes />
+                  </Button>
+                </div>
+                <div className="modal-body">
+                  <p>Please review your order details:</p>
+                  <div className="mb-3">
+                    <strong>Payment Method:</strong>{" "}
+                    <span className="text-capitalize">
+                      {paymentMethod.replace("_", " ")}
+                    </span>
+                  </div>
+                  <div className="mb-3">
+                    <strong>Total Amount:</strong>{" "}
+                    <span className="text-primary">₱{total.toFixed(2)}</span>
+                  </div>
+                  <p className="mb-0">
+                    Are you sure you want to place this order?
+                  </p>
+                </div>
+                <div className="modal-footer border-top border-secondary">
+                  <Button
+                    variant="secondary"
+                    onClick={() => setShowConfirmation(false)}
+                    disabled={loading}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="primary"
+                    onClick={confirmCheckout}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" />
+                        Processing...
+                      </>
+                    ) : (
+                      "Confirm Order"
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Container>
   );
 };

@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Nav,
@@ -6,29 +7,51 @@ import {
   Form,
   FormControl,
   Dropdown,
+  Badge,
 } from "react-bootstrap";
-import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { motion } from "framer-motion";
 import logo from "../../public/images/bookly-logo.png";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 function Header() {
-  const { logout } = useAuth();
+  const { logout, authTokens } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      if (!authTokens) return;
+      try {
+        const res = await axios.get("http://localhost:8000/api/cart-items/", {
+          headers: { Authorization: `Bearer ${authTokens.access}` },
+        });
+        // Calculate total quantity instead of just counting items
+        const totalQuantity = res.data.reduce((sum, item) => sum + item.quantity, 0);
+        setCartCount(totalQuantity);
+      } catch (error) {
+        console.error("Failed to fetch cart count:", error);
+      }
+    };
+
+    fetchCartCount();
+    // Set up an interval to refresh cart count
+    const interval = setInterval(fetchCartCount, 2000);
+    
+    return () => clearInterval(interval);
+  }, [authTokens]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     navigate(`/?search=${encodeURIComponent(searchTerm)}`);
-  }
+  };
 
   return (
     <Navbar bg="dark" variant="dark" className="py-3 shadow-sm">
-      <Container
-        fluid
-        className="d-flex justify-content-between align-items-center"
-      >
+      <Container fluid className="d-flex justify-content-between align-items-center">
         {/* Left: Logo + Brand */}
         <Navbar.Brand
           as={Link}
@@ -94,9 +117,41 @@ function Header() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </Form>
-          <Link to="/cart" className="text-light fs-5">
-            <FaShoppingCart />
-          </Link>
+
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+            <Link 
+              to="/cart" 
+              className="text-light fs-5 position-relative d-inline-flex align-items-center"
+              style={{ textDecoration: 'none' }}
+            >
+              <FaShoppingCart />
+              {cartCount > 0 && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="position-absolute"
+                  style={{ 
+                    top: -8, 
+                    right: -8,
+                  }}
+                >
+                  <Badge 
+                    bg="primary" 
+                    pill 
+                    className="d-flex align-items-center justify-content-center"
+                    style={{ 
+                      minWidth: '18px', 
+                      height: '18px',
+                      fontSize: '0.7rem'
+                    }}
+                  >
+                    {cartCount}
+                  </Badge>
+                </motion.div>
+              )}
+            </Link>
+          </motion.div>
+
           <Dropdown align="end">
             <Dropdown.Toggle
               variant="link"
