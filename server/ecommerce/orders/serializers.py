@@ -40,7 +40,8 @@ class OrderSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        if instance.cart:
+        # Always return a list for cart_items, even if empty
+        if instance.cart and hasattr(instance.cart, "items"):
             cart_items = instance.cart.items.all()
             ret['cart_items'] = CartItemOrderSerializer(cart_items, many=True).data
         else:

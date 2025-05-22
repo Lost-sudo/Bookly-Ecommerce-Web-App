@@ -33,6 +33,8 @@ const OrdersPage = () => {
           headers: { Authorization: `Bearer ${authTokens.access}` },
         }
       );
+      // Debug log to inspect the response
+      console.log("Fetched orders:", res.data);
       const sortedOrders = res.data.sort(
         (a, b) => new Date(b.order_date) - new Date(a.order_date)
       );
@@ -164,7 +166,7 @@ const OrderCard = ({ order, index }) => (
           </div>
         </div>
         <div className="order-items">
-          {Array.isArray(order.cart_items) &&
+          {Array.isArray(order.cart_items) && order.cart_items.length > 0 ? (
             order.cart_items.map(
               (item, idx) =>
                 item &&
@@ -192,13 +194,19 @@ const OrderCard = ({ order, index }) => (
                       </Col>
                       <Col xs="auto">
                         <span className="fw-bold text-primary fs-5">
-                          ₱{(item.book.price * item.quantity).toFixed(2)}
+                          ₱
+                          {item.book.price && item.quantity
+                            ? (item.book.price * item.quantity).toFixed(2)
+                            : "0.00"}
                         </span>
                       </Col>
                     </Row>
                   </motion.div>
                 )
-            )}
+            )
+          ) : (
+            <div className="text-muted small">No items in this order.</div>
+          )}
         </div>
 
         <hr className="border-secondary my-3" />
