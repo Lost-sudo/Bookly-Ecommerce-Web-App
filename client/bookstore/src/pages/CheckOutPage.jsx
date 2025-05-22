@@ -3,10 +3,17 @@ import { Container, Card, Row, Col, Button, Form } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaShoppingBag, FaTruck, FaCreditCard, FaTimes, FaArrowLeft } from "react-icons/fa";
+import {
+  FaShoppingBag,
+  FaTruck,
+  FaCreditCard,
+  FaTimes,
+  FaArrowLeft,
+} from "react-icons/fa";
 import axios from "axios";
 import CustomAlert from "../components/CustomAlert";
 import { useAlert } from "../hooks/useAlert";
+import { getUser } from "../api/user";
 
 const shipping = 5.0;
 
@@ -23,11 +30,15 @@ const CheckOutPage = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     phoneNumber: "",
-    address: ""
+    address: "",
   });
+
+  // Add user state for profile info
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetchCartItems();
+    fetchUserInfo();
   }, [authTokens]);
 
   const fetchCartItems = async () => {
@@ -46,11 +57,26 @@ const CheckOutPage = () => {
     }
   };
 
+  // Fetch user profile info and pre-fill form
+  const fetchUserInfo = async () => {
+    try {
+      const data = await getUser(authTokens?.access);
+      setUser(data);
+      setFormData({
+        fullName: data.full_name || "",
+        phoneNumber: data.phone_number || "",
+        address: data.address || "",
+      });
+    } catch (error) {
+      // fallback: leave form empty
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -78,32 +104,59 @@ const CheckOutPage = () => {
 
   const confirmCheckout = async () => {
     if (!validateForm()) return;
-    
+
     setLoading(true);
     const transactionID = `TXN-${Math.floor(100000 + Math.random() * 900000)}`;
 
     try {
-      await axios.post(
+      // Send user info with order
+      const payload = {
+        total_amount: total,
+        payment_type: paymentMethod,
+        transaction_id: transactionID,
+        full_name: formData.fullName,
+        phone_number: formData.phoneNumber,
+        address: formData.address,
+      };
+      console.log("Checkout Request Payload:", payload);
+
+      const response = await axios.post(
         "http://localhost:8000/api/orders/",
+        payload,
         {
-          payment_amount: total,
-          payment_type: paymentMethod,
-          transaction_id: transactionID,
-          shipping_address: formData.address,
-          contact_number: formData.phoneNumber,
-          full_name: formData.fullName
-        },
-        {
-          headers: { Authorization: `Bearer ${authTokens.access}` },
+          headers: {
+            Authorization: `Bearer ${authTokens.access}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
-      showAlert("🎉 Order placed successfully! Redirecting to orders...", "success");
+      console.log("Checkout Response:", response.data);
+
+      showAlert(
+        "🎉 Order placed successfully! Redirecting to orders...",
+        "success"
+      );
       setCartItems([]);
       setShowConfirmation(false);
       setTimeout(() => navigate("/orders"), 2000);
     } catch (error) {
-      const errorMessage = error.response?.data?.detail ||
+      console.error("Checkout Error Details:", {
+        message: error.message,
+        response: {
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          headers: error.response?.headers,
+        },
+        request: {
+          payload: error.config?.data,
+          headers: error.config?.headers,
+        },
+      });
+
+      const errorMessage =
+        error.response?.data?.detail ||
         error.response?.data?.message ||
         error.response?.data ||
         "An unexpected error occurred. Please try again.";
@@ -120,7 +173,7 @@ const CheckOutPage = () => {
         show={alert.show}
         message={alert.message}
         type={alert.type}
-        onClose={() => setAlert(prev => ({ ...prev, show: false }))}
+        onClose={() => setAlert((prev) => ({ ...prev, show: false }))}
       />
 
       <motion.div
@@ -247,6 +300,18 @@ const CheckOutPage = () => {
               >
                 <Card.Body>
                   <h5 className="text-primary mb-4">Order Summary</h5>
+                  {/* Show user info in summary */}
+                  <div className="mb-3">
+                    <div>
+                      <strong>Name:</strong> {formData.fullName}
+                    </div>
+                    <div>
+                      <strong>Phone:</strong> {formData.phoneNumber}
+                    </div>
+                    <div>
+                      <strong>Address:</strong> {formData.address}
+                    </div>
+                  </div>
                   {cartItems.map((item) => (
                     <div
                       key={item.id}

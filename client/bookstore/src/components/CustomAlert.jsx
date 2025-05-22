@@ -11,23 +11,23 @@ const CustomAlert = ({ show, message, type = "success", onClose }) => {
   const alertConfig = {
     success: {
       icon: <FaCheckCircle size={24} />,
-      bgColor: "rgba(40, 167, 69, 0.95)",
-      borderColor: "#28a745",
+      bgColor: "var(--color-card)",
+      borderColor: "var(--color-primary)",
     },
     error: {
       icon: <FaExclamationCircle size={24} />,
-      bgColor: "rgba(220, 53, 69, 0.95)",
+      bgColor: "var(--color-card)",
       borderColor: "#dc3545",
     },
     warning: {
       icon: <FaExclamationTriangle size={24} />,
-      bgColor: "rgba(255, 193, 7, 0.95)",
+      bgColor: "var(--color-card)",
       borderColor: "#ffc107",
     },
     info: {
       icon: <FaInfoCircle size={24} />,
-      bgColor: "rgba(23, 162, 184, 0.95)",
-      borderColor: "#17a2b8",
+      bgColor: "var(--color-card)",
+      borderColor: "var(--color-primary)",
     },
   };
 
@@ -47,7 +47,7 @@ const CustomAlert = ({ show, message, type = "success", onClose }) => {
             right: 20,
             zIndex: 9999,
             backgroundColor: config.bgColor,
-            color: "white",
+            color: "var(--color-text)",
             padding: "1rem 1.5rem",
             borderRadius: "12px",
             boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
@@ -57,6 +57,7 @@ const CustomAlert = ({ show, message, type = "success", onClose }) => {
             gap: "0.75rem",
             minWidth: "300px",
             backdropFilter: "blur(8px)",
+            transition: "background 0.3s, color 0.3s",
           }}
         >
           <div style={{ marginRight: "0.5rem" }}>{config.icon}</div>

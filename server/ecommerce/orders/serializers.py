@@ -20,14 +20,23 @@ class CartItemOrderSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     cart_items = CartItemOrderSerializer(many=True, read_only=True)
-
+    full_name = serializers.CharField(write_only=True, required=False)
+    phone_number = serializers.CharField(write_only=True, required=False)
+    address = serializers.CharField(write_only=True, required=False)
+    user_full_name = serializers.SerializerMethodField()
+    user_phone_number = serializers.SerializerMethodField()
+    user_address = serializers.SerializerMethodField()
+    
     class Meta:
         model = Order
         fields = [
             'id', 'order_date', 'payment_status',
             'total_amount', 'order_status', 'transaction_id',
-            'payment_type', 'cart_items', 'created_at'
+            'payment_type', 'cart_items', 'created_at',
+            'full_name', 'phone_number', 'address',
+            'user_full_name', 'user_phone_number', 'user_address'
         ]
+        read_only_fields = ['user', 'cart', 'user_full_name', 'user_phone_number', 'user_address']
     
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -36,4 +45,35 @@ class OrderSerializer(serializers.ModelSerializer):
             ret['cart_items'] = CartItemOrderSerializer(cart_items, many=True).data
         else:
             ret['cart_items'] = []
+        ret['user_full_name'] = getattr(instance.user, 'full_name', '')
+        ret['user_phone_number'] = getattr(instance.user, 'phone_number', '')
+        ret['user_address'] = getattr(instance.user, 'address', '')
         return ret
+
+    def create(self, validated_data):
+        full_name = validated_data.pop('full_name', None)
+        phone_number = validated_data.pop('phone_number', None)
+        address = validated_data.pop('address', None)
+        user = self.context['request'].user
+        updated = False
+        if full_name and user.full_name != full_name:
+            user.full_name = full_name
+            updated = True
+        if phone_number and user.phone_number != phone_number:
+            user.phone_number = phone_number
+            updated = True
+        if address and user.address != address:
+            user.address = address
+            updated = True
+        if updated:
+            user.save()
+        return super().create(validated_data)
+
+    def get_user_full_name(self, obj):
+        return getattr(obj.user, 'full_name', '')
+
+    def get_user_phone_number(self, obj):
+        return getattr(obj.user, 'phone_number', '')
+
+    def get_user_address(self, obj):
+        return getattr(obj.user, 'address', '')

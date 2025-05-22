@@ -8,20 +8,35 @@ import { useNavigate } from "react-router-dom";
 import CustomAlert from "./CustomAlert";
 import "../../public/css/BookCard.css";
 
-const BookCard = ({ id, cover, title, author, price }) => {
+const BookCard = ({ id, cover, title, author, price, onAddToCart }) => {
   const { authTokens } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-  const [alert, setAlert] = useState({ show: false, message: "", type: "success" });
+  const [alert, setAlert] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
 
   const showAlert = (message, type) => {
     setAlert({ show: true, message, type });
-    setTimeout(() => setAlert({ show: false, message: "", type: "success" }), 3000);
+    setTimeout(
+      () => setAlert({ show: false, message: "", type: "success" }),
+      3000
+    );
   };
 
   const handleAddToCart = async (e) => {
     e.stopPropagation(); // Prevent navigation when clicking the add button
+    if (onAddToCart) {
+      setIsLoading(true);
+      await onAddToCart(id, authTokens, navigate);
+      setIsAdded(true);
+      setTimeout(() => setIsAdded(false), 2000);
+      setIsLoading(false);
+      return;
+    }
     if (!authTokens) {
       showAlert("Please login to add items to your cart", "info");
       setTimeout(() => navigate("/login"), 2000);
@@ -37,12 +52,15 @@ const BookCard = ({ id, cover, title, author, price }) => {
           headers: { Authorization: `Bearer ${authTokens.access}` },
         }
       );
-      
+
       setIsAdded(true);
       showAlert("Added to cart successfully! 🛍️", "success");
       setTimeout(() => setIsAdded(false), 2000);
     } catch (err) {
-      showAlert(err.response?.data?.message || "Failed to add to cart", "error");
+      showAlert(
+        err.response?.data?.message || "Failed to add to cart",
+        "error"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -50,21 +68,19 @@ const BookCard = ({ id, cover, title, author, price }) => {
 
   return (
     <>
-      <CustomAlert
-        show={alert.show}
-        message={alert.message}
-        type={alert.type}
-        onClose={() => setAlert({ ...alert, show: false })}
-      />
-      
+      {!onAddToCart && (
+        <CustomAlert
+          show={alert.show}
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert({ ...alert, show: false })}
+        />
+      )}
+
       <div className="book-card-wrapper">
         <Card className="book-card" onClick={() => navigate(`/book/${id}`)}>
           <div className="book-cover-wrapper">
-            <Card.Img
-              src={cover}
-              alt={title}
-              className="book-cover"
-            />
+            <Card.Img src={cover} alt={title} className="book-cover" />
           </div>
           <Card.Body className="book-content">
             <div className="book-info">
@@ -76,8 +92,10 @@ const BookCard = ({ id, cover, title, author, price }) => {
               </div>
             </div>
             <div className="book-footer">
-              <span className="book-price">₱{price}</span>
-              <motion.div 
+              <span className="book-price" style={{ color: "#4b8bbe" }}>
+                ₱{price}
+              </span>
+              <motion.div
                 whileTap={{ scale: 0.95 }}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -85,6 +103,13 @@ const BookCard = ({ id, cover, title, author, price }) => {
                   variant={isAdded ? "success" : "primary"}
                   size="sm"
                   className="cart-button"
+                  style={{
+                    background: isAdded
+                      ? "linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)"
+                      : "linear-gradient(90deg, #4b8bbe 0%, #306998 100%)",
+                    color: "#fff",
+                    border: "none",
+                  }}
                   onClick={handleAddToCart}
                   disabled={isLoading || isAdded}
                 >

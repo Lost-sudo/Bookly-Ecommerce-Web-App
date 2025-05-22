@@ -80,7 +80,7 @@ const BookDetails = () => {
   }
 
   return (
-    <Container className="py-5 text-light">
+    <Container className="py-5 text-light pb-5 mb-5">
       <CustomAlert
         show={alert.show}
         message={alert.message}

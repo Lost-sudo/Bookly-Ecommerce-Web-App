@@ -4,7 +4,7 @@
 }
 
 .trending-section {
-  background: rgba(33, 37, 41, 0.4);
+  background: var(--color-bg-secondary);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -15,16 +15,17 @@
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
+  color: var(--color-primary);
 }
 
 .section-title::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   bottom: -5px;
   width: 60px;
   height: 3px;
-  background: #4b8bbe;
+  background: var(--color-primary);
   border-radius: 2px;
 }
 
@@ -41,9 +42,8 @@
   .section-title {
     font-size: 1.5rem;
   }
-  
+
   .trending-container {
     padding: 0 0.5rem;
   }
 }
-

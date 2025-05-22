@@ -69,7 +69,17 @@ const AllBooks = () => {
         />
       </div>
 
-      <div className="flex-grow-1" id="all-books">
+      <div
+        className="flex-grow-1"
+        id="all-books"
+        style={{
+          background: "var(--color-bg-secondary)",
+          color: "var(--color-text)",
+          borderRadius: "16px",
+          padding: "2rem 1.5rem",
+          transition: "background 0.3s, color 0.3s",
+        }}
+      >
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h4 className="fw-bold">All Books</h4>
           <ButtonGroup>

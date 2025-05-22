@@ -3,6 +3,15 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { ThemeProvider, useTheme } from "../context/ThemeContext";
+
+const ThemeSync = () => {
+  const { theme } = useTheme();
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+  return null;
+};
 
 const MainLayout = () => {
   const location = useLocation();
@@ -19,7 +28,8 @@ const MainLayout = () => {
   }, [location.pathname]);
 
   return (
-    <>
+    <ThemeProvider>
+      <ThemeSync />
       {shouldShowHeader && <Header />}
       <AnimatePresence mode="wait">
         {isLoading ? (
@@ -45,7 +55,7 @@ const MainLayout = () => {
         )}
       </AnimatePresence>
       <Footer />
-    </>
+    </ThemeProvider>
   );
 };
 

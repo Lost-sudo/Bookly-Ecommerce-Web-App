@@ -1,9 +1,46 @@
+/* Theme variables */
+:root {
+  --color-bg: #f8f9fa;
+  --color-bg-secondary: #fff;
+  --color-text: #23272b;
+  --color-card: #fff;
+  --color-primary: #4b8bbe;
+  --color-border: #4b8bbe;
+  --color-muted: #6c757d;
+}
+
+[data-theme="dark"] {
+  --color-bg: #23272b;
+  --color-bg-secondary: #1a1a1a;
+  --color-text: #fff;
+  --color-card: #23272b;
+  --color-primary: #4b8bbe;
+  --color-border: #4b8bbe;
+  --color-muted: #bbb;
+}
+
+[data-theme="light"] {
+  --color-bg: #f8f9fa;
+  --color-bg-secondary: #fff;
+  --color-text: #23272b;
+  --color-card: #fff;
+  --color-primary: #4b8bbe;
+  --color-border: #4b8bbe;
+  --color-muted: #6c757d;
+}
+
 /* LoginPage.css */
+body,
+html {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+
 .login-container {
   min-height: 100vh;
   background: url("/images/book-bg.jpg") no-repeat center center;
   background-size: cover;
-  background-color: #0d1117; /* fallback for dark theme */
+  background-color: var(--color-bg-secondary); /* fallback for dark theme */
   padding: 2rem;
 }
 
@@ -21,7 +58,7 @@
 }
 
 .glass-card .btn-primary {
-  background-color: #4b8bbe;
+  background-color: var(--color-primary);
   border: none;
 }
 
@@ -32,20 +69,38 @@
 /* Homepage CSS */
 .search-input {
   background-color: #2a2a2a;
-  color: #fff;
+  color: var(--color-text);
   border: none;
 }
 
 .search-input::placeholder {
-  color: #bbb;
+  color: var(--color-muted);
 }
 
-.navbar-nav .dropdown-menu {
-  background-color: #212529;
+.navbar,
+.navbar-dark,
+.navbar-light {
+  background: var(--color-bg-secondary) !important;
+  color: var(--color-text) !important;
 }
 
-.navbar-nav .dropdown-item:hover {
-  background-color: #343a40;
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .dropdown-item {
+  color: var(--color-text) !important;
+}
+
+.navbar .dropdown-menu {
+  background-color: var(--color-card) !important;
+}
+
+.navbar .dropdown-item:hover {
+  background-color: var(--color-bg-secondary) !important;
+}
+
+.hero-section {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
 }
 
 /* Global Animations */
@@ -118,7 +173,7 @@
   height: 50px;
   border: 3px solid rgba(75, 139, 190, 0.3);
   border-radius: 50%;
-  border-top-color: #4b8bbe;
+  border-top-color: var(--color-primary);
   animation: spin 1s ease-in-out infinite;
 }
 
@@ -144,8 +199,23 @@
   transform: translateY(0);
 }
 
+.btn-primary,
+.btn-primary:focus,
+.btn-primary:active {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    #306998 100%
+  ) !important;
+  border: none !important;
+  color: var(--color-text) !important;
+}
+
 /* Card Hover Effects */
 .card {
+  background: var(--color-card) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backface-visibility: hidden;
 }
@@ -162,12 +232,12 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: var(--color-bg-secondary);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4b8bbe;
+  background: var(--color-primary);
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
@@ -217,10 +287,10 @@
 }
 
 .form-control:focus {
-  border-color: #4b8bbe;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 0.2rem rgba(75, 139, 190, 0.25);
   background-color: #2a2a2a;
-  color: #fff;
+  color: var(--color-text);
 }
 
 /* Glass Effect for Cards */
@@ -304,11 +374,11 @@
 }
 
 .payment-method-card:hover {
-  border-color: #4b8bbe !important;
+  border-color: var(--color-primary) !important;
 }
 
 .payment-method-card.selected {
-  border-color: #4b8bbe !important;
+  border-color: var(--color-primary) !important;
   background-color: rgba(75, 139, 190, 0.1) !important;
 }
 
@@ -332,15 +402,15 @@
 }
 
 .cart-icon-wrapper:hover {
-  color: #4b8bbe;
+  color: var(--color-primary);
 }
 
 .cart-badge {
   position: absolute;
   top: -8px;
   right: -8px;
-  background: #4b8bbe;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-text);
   border-radius: 50%;
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
@@ -365,10 +435,20 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #4b8bbe;
+  background: var(--color-primary);
   transition: width 0.3s ease;
 }
 
 .nav-link:hover::after {
   width: 100%;
+}
+
+/* Accordion Styles */
+.accordion,
+.accordion-item,
+.accordion-header,
+.accordion-body {
+  background: var(--color-card) !important;
+  color: var(--color-text) !important;
+  transition: background 0.3s, color 0.3s;
 }

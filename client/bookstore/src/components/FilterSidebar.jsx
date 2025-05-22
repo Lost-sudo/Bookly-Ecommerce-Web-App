@@ -1,5 +1,6 @@
 import { Accordion, Form } from "react-bootstrap";
 import { FaFilter } from "react-icons/fa";
+import { useTheme } from "../context/ThemeContext";
 
 const FilterSidebar = ({
   selectedGenres,
@@ -7,6 +8,8 @@ const FilterSidebar = ({
   selectedAuthors,
   setSelectedAuthors,
 }) => {
+  const { theme } = useTheme();
+
   const genres = [
     "Fiction",
     "Non-Fiction",
@@ -33,9 +36,7 @@ const FilterSidebar = ({
 
   const handleGenreChange = (genre) => {
     setSelectedGenres((prev) =>
-      prev.includes(genre)
-        ? prev.filter((g) => g !== genre)
-        : [...prev, genre]
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
     );
   };
 
@@ -49,37 +50,72 @@ const FilterSidebar = ({
 
   return (
     <div
-      className="bg-dark text-light p-3 rounded shadow"
-      style={{ minWidth: "250px", maxHeight: "85vh", overflowY: "auto" }}
+      className="p-3 rounded shadow"
+      style={{
+        minWidth: "250px",
+        maxHeight: "85vh",
+        overflowY: "auto",
+        background: "var(--color-card)",
+        color: "var(--color-text)",
+        border: "1px solid var(--color-border)",
+        transition: "background 0.3s, color 0.3s",
+      }}
     >
-      <h5 className="mb-3 d-flex align-items-center gap-2 text-light">
-        <FaFilter /> Filters
+      <h5
+        className="mb-3 d-flex align-items-center gap-2"
+        style={{ color: "var(--color-text)" }}
+      >
+        <FaFilter style={{ color: "var(--color-primary)" }} /> Filters
       </h5>
       <Accordion defaultActiveKey={"0"} flush alwaysOpen>
-        <Accordion.Item eventKey="0" className="bg-dark text-light">
+        <Accordion.Item
+          eventKey="0"
+          style={{
+            background: "var(--color-card)",
+            color: "var(--color-text)",
+          }}
+        >
           <Accordion.Header>Genres</Accordion.Header>
-          <Accordion.Body className="bg-dark text-light">
+          <Accordion.Body
+            style={{
+              background: "var(--color-card)",
+              color: "var(--color-text)",
+            }}
+          >
             {genres.map((genre) => (
               <Form.Check
                 key={genre}
                 label={genre}
                 type="checkbox"
-                className="text-light mb-2"
+                className="mb-2"
+                style={{ color: "var(--color-text)" }}
                 checked={selectedGenres.includes(genre)}
                 onChange={() => handleGenreChange(genre)}
               />
             ))}
           </Accordion.Body>
         </Accordion.Item>
-        <Accordion.Item eventKey="1" className="bg-dark text-light">
+        <Accordion.Item
+          eventKey="1"
+          style={{
+            background: "var(--color-card)",
+            color: "var(--color-text)",
+          }}
+        >
           <Accordion.Header>Authors</Accordion.Header>
-          <Accordion.Body className="bg-dark text-light">
+          <Accordion.Body
+            style={{
+              background: "var(--color-card)",
+              color: "var(--color-text)",
+            }}
+          >
             {authors.map((author) => (
               <Form.Check
                 key={author}
                 label={author}
                 type="checkbox"
-                className="text-light mb-2"
+                className="mb-2"
+                style={{ color: "var(--color-text)" }}
                 checked={selectedAuthors.includes(author)}
                 onChange={() => handleAuthorChange(author)}
               />

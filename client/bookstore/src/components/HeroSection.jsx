@@ -2,7 +2,14 @@ import { Container, Button } from "react-bootstrap";
 
 const HeroSection = () => {
   return (
-    <section className="hero-section d-flex align-items-center bg-dark text-light">
+    <section
+      className="hero-section d-flex align-items-center"
+      style={{
+        background: "var(--color-bg)",
+        color: "var(--color-text)",
+        transition: "background 0.3s, color 0.3s",
+      }}
+    >
       <Container className="text-center py-5">
         <h1 className="display-4 fw-bold mb-4">
           Discover Your Next Favorite Book
@@ -17,6 +24,10 @@ const HeroSection = () => {
               ?.scrollIntoView({ behavior: "smooth" });
           }}
           variant="primary"
+          style={{
+            background: "linear-gradient(90deg, #4b8bbe 0%, #306998 100%)",
+            border: "none",
+          }}
           size="lg"
           className="mt-3"
         >

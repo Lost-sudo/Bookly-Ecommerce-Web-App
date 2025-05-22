@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
     full_name = models.CharField(max_length=100, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='customer')
+    address = models.TextField(blank=True)  # <-- Add this line
 
     REQUIRED_FIELDS = ['email']
     USERNAME_FIELD = 'username'

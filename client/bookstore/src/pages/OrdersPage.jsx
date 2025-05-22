@@ -3,7 +3,13 @@ import { Container, Card, Row, Col, Badge, Alert } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
-import { FaBox, FaShippingFast, FaCheckCircle, FaClock, FaTimes } from "react-icons/fa";
+import {
+  FaBox,
+  FaShippingFast,
+  FaCheckCircle,
+  FaClock,
+  FaTimes,
+} from "react-icons/fa";
 import LoadingSpinner from "../components/LoadingSpinner";
 import placeholderImg from "../../public/images/placeholder-img.jpg";
 
@@ -142,36 +148,54 @@ const OrderCard = ({ order, index }) => (
             </Badge>
           </Col>
         </Row>
-
+        {/* Show user info */}
+        <div className="mb-3">
+          <div>
+            <strong>Name:</strong> {order.user_full_name}
+          </div>
+          <div>
+            <strong>Phone:</strong> {order.user_phone_number}
+          </div>
+          <div>
+            <strong>Address:</strong> {order.user_address}
+          </div>
+        </div>
         <div className="order-items">
-          {Array.isArray(order.cart_items) && order.cart_items.map((item, idx) => (
-            item && item.book && (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 + idx * 0.1 }}
-                className="mb-3"
-              >
-                <Row className="align-items-center g-3">
-                  <Col>
-                    <div>
-                      <h6 className="mb-1 fw-semibold">{item.book.title}</h6>
-                      <p className="text-muted mb-0 small">{item.book.author}</p>
-                      <span className="badge bg-secondary mt-2">
-                        Qty: {item.quantity}
-                      </span>
-                    </div>
-                  </Col>
-                  <Col xs="auto">
-                    <span className="fw-bold text-primary fs-5">
-                      ₱{(item.book.price * item.quantity).toFixed(2)}
-                    </span>
-                  </Col>
-                </Row>
-              </motion.div>
-            )
-          ))}
+          {Array.isArray(order.cart_items) &&
+            order.cart_items.map(
+              (item, idx) =>
+                item &&
+                item.book && (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 + idx * 0.1 }}
+                    className="mb-3"
+                  >
+                    <Row className="align-items-center g-3">
+                      <Col>
+                        <div>
+                          <h6 className="mb-1 fw-semibold">
+                            {item.book.title}
+                          </h6>
+                          <p className="text-muted mb-0 small">
+                            {item.book.author}
+                          </p>
+                          <span className="badge bg-secondary mt-2">
+                            Qty: {item.quantity}
+                          </span>
+                        </div>
+                      </Col>
+                      <Col xs="auto">
+                        <span className="fw-bold text-primary fs-5">
+                          ₱{(item.book.price * item.quantity).toFixed(2)}
+                        </span>
+                      </Col>
+                    </Row>
+                  </motion.div>
+                )
+            )}
         </div>
 
         <hr className="border-secondary my-3" />
