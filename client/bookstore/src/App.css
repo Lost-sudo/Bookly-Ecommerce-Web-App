@@ -452,3 +452,9 @@ html {
   color: var(--color-text) !important;
   transition: background 0.3s, color 0.3s;
 }
+
+/* Custom Placeholder Styles */
+.custom-placeholder::placeholder {
+  color: #bbb !important;
+  opacity: 1;
+}

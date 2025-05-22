@@ -101,10 +101,11 @@ const LoginPage = () => {
                           setFormData({ ...formData, username: e.target.value })
                         }
                         required
-                        className="bg-transparent text-light border-start-0"
+                        className="bg-transparent text-light border-start-0 custom-placeholder"
                         style={{
                           boxShadow: "none",
                           borderColor: "rgba(75, 139, 190, 0.2)",
+                          color: "#fff",
                         }}
                       />
                     </div>
@@ -130,10 +131,11 @@ const LoginPage = () => {
                           setFormData({ ...formData, password: e.target.value })
                         }
                         required
-                        className="bg-transparent text-light border-start-0"
+                        className="bg-transparent text-light border-start-0 custom-placeholder"
                         style={{
                           boxShadow: "none",
                           borderColor: "rgba(75, 139, 190, 0.2)",
+                          color: "#fff",
                         }}
                       />
                     </div>
