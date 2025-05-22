@@ -31,10 +31,10 @@ const RegisterPage = () => {
     } catch (err) {
       setError(
         "Registration failed: " +
-        (err.response?.data?.message ||
-         err.response?.data?.detail ||
-         JSON.stringify(err.response?.data) ||
-         err.message)
+          (err.response?.data?.message ||
+            err.response?.data?.detail ||
+            JSON.stringify(err.response?.data) ||
+            err.message)
       );
     }
   };
