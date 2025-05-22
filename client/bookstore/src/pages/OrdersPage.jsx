@@ -142,7 +142,7 @@ const OrderCard = ({ order, index }) => (
             <small className="text-muted d-block mt-1">
               Placed on{" "}
               {order.order_date
-                ? new Date(order.order_date).toLocaleDateString()
+                ? new Date(order.order_date).toLocaleString()
                 : ""}
             </small>
           </Col>
@@ -162,15 +162,15 @@ const OrderCard = ({ order, index }) => (
         <div className="mb-3">
           <div>
             <strong>Name:</strong>{" "}
-            {order.user_full_name || order.full_name || ""}
+            {order.full_name || order.user_full_name || ""}
           </div>
           <div>
             <strong>Phone:</strong>{" "}
-            {order.user_phone_number || order.phone_number || ""}
+            {order.phone_number || order.user_phone_number || ""}
           </div>
           <div>
             <strong>Address:</strong>{" "}
-            {order.user_address || order.address || ""}
+            {order.address || order.user_address || ""}
           </div>
         </div>
         <div className="order-items">
