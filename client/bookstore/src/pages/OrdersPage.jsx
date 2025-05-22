@@ -140,7 +140,10 @@ const OrderCard = ({ order, index }) => (
               </h6>
             </div>
             <small className="text-muted d-block mt-1">
-              Placed on {new Date(order.order_date).toLocaleDateString()}
+              Placed on{" "}
+              {order.order_date
+                ? new Date(order.order_date).toLocaleDateString()
+                : ""}
             </small>
           </Col>
           <Col xs="auto">
@@ -148,21 +151,26 @@ const OrderCard = ({ order, index }) => (
               bg={getStatusBadge(order.order_status)}
               className="px-3 py-2"
             >
-              {order.order_status.charAt(0).toUpperCase() +
-                order.order_status.slice(1)}
+              {order.order_status
+                ? order.order_status.charAt(0).toUpperCase() +
+                  order.order_status.slice(1)
+                : "Unknown"}
             </Badge>
           </Col>
         </Row>
         {/* Show user info */}
         <div className="mb-3">
           <div>
-            <strong>Name:</strong> {order.user_full_name}
+            <strong>Name:</strong>{" "}
+            {order.user_full_name || order.full_name || ""}
           </div>
           <div>
-            <strong>Phone:</strong> {order.user_phone_number}
+            <strong>Phone:</strong>{" "}
+            {order.user_phone_number || order.phone_number || ""}
           </div>
           <div>
-            <strong>Address:</strong> {order.user_address}
+            <strong>Address:</strong>{" "}
+            {order.user_address || order.address || ""}
           </div>
         </div>
         <div className="order-items">
@@ -215,13 +223,14 @@ const OrderCard = ({ order, index }) => (
           <div>
             <small className="text-muted">Order Total</small>
             <h5 className="mb-0 fw-bold text-primary">
-              ₱{parseFloat(order.total_amount).toFixed(2)}
+              ₱{parseFloat(order.total_amount || 0).toFixed(2)}
             </h5>
           </div>
           <div className="text-end">
             <small className="text-muted d-block">Payment Method</small>
             <span className="badge bg-secondary">
-              {order.payment_type?.replace("_", " ").toUpperCase() || "N/A"}
+              {(order.payment_type || "").replace("_", " ").toUpperCase() ||
+                "N/A"}
             </span>
           </div>
         </div>
