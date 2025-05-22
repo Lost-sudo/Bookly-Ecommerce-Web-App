@@ -4,7 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaArrowLeft, FaBookOpen } from "react-icons/fa";
 import BookCard from "../components/BookCard";
-import { getBooksByGenre } from "../api/bookApi.js";
+import { getBooksByGenre } from "../api/bookAPI.js";
 import CustomAlert from "../components/CustomAlert";
 
 const GenreBook = () => {
