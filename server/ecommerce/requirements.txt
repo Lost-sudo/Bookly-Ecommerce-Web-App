@@ -8,3 +8,5 @@ rest_framework_simplejwt
 djangorestframework-simplejwt
 django-filter
 django-environ
+cloudinary
+django-cloudinary-storage
