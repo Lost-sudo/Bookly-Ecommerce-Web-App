@@ -15,18 +15,24 @@ const BookDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-  const [alert, setAlert] = useState({ show: false, message: "", type: "success" });
+  const [alert, setAlert] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
 
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/books/${id}/`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/books/${id}/`
+        );
         setBook(response.data);
       } catch (error) {
         setAlert({
           show: true,
           message: "Failed to load book details",
-          type: "error"
+          type: "error",
         });
       } finally {
         setLoading(false);
@@ -40,7 +46,7 @@ const BookDetails = () => {
       setAlert({
         show: true,
         message: "Please login to add items to cart",
-        type: "info"
+        type: "info",
       });
       setTimeout(() => navigate("/login"), 2000);
       return;
@@ -49,7 +55,7 @@ const BookDetails = () => {
     setIsAdding(true);
     try {
       await axios.post(
-        "http://localhost:8000/api/cart-items/",
+        `${import.meta.env.VITE_API_URL}/api/cart-items/`,
         { book: id, quantity: 1 },
         { headers: { Authorization: `Bearer ${authTokens.access}` } }
       );
@@ -57,14 +63,14 @@ const BookDetails = () => {
       setAlert({
         show: true,
         message: "Added to cart successfully! 🛍️",
-        type: "success"
+        type: "success",
       });
       setTimeout(() => setIsAdded(false), 2000);
     } catch (error) {
       setAlert({
         show: true,
         message: error.response?.data?.message || "Failed to add to cart",
-        type: "error"
+        type: "error",
       });
     } finally {
       setIsAdding(false);
@@ -85,7 +91,7 @@ const BookDetails = () => {
         show={alert.show}
         message={alert.message}
         type={alert.type}
-        onClose={() => setAlert(prev => ({ ...prev, show: false }))}
+        onClose={() => setAlert((prev) => ({ ...prev, show: false }))}
       />
 
       <motion.div
@@ -129,7 +135,7 @@ const BookDetails = () => {
             >
               <h2 className="mb-2">{book.title}</h2>
               <p className="text-muted mb-4">by {book.author}</p>
-              
+
               <div className="mb-4">
                 <h4 className="text-primary mb-3">₱{book.price}</h4>
                 <Button

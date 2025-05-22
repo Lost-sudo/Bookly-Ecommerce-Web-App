@@ -22,7 +22,7 @@ const RegisterPage = () => {
       return;
     }
     try {
-      await axios.post("http://localhost:8000/api/auth/register/", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register/`, {
         username: formData.username,
         email: formData.email,
         password: formData.password,
@@ -34,11 +34,11 @@ const RegisterPage = () => {
   };
 
   return (
-    <Container 
+    <Container
       className="d-flex align-items-center justify-content-center min-vh-100"
-      style={{ 
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #292929 100%)',
-        padding: '20px'
+      style={{
+        background: "linear-gradient(135deg, #1a1a1a 0%, #292929 100%)",
+        padding: "20px",
       }}
     >
       <motion.div
@@ -46,13 +46,15 @@ const RegisterPage = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
         className="w-100"
-        style={{ maxWidth: '450px' }}
+        style={{ maxWidth: "450px" }}
       >
-        <Card className="bg-dark text-light border-0 shadow-lg" 
-              style={{ 
-                backdropFilter: 'blur(10px)',
-                backgroundColor: 'rgba(33, 37, 41, 0.85)'
-              }}>
+        <Card
+          className="bg-dark text-light border-0 shadow-lg"
+          style={{
+            backdropFilter: "blur(10px)",
+            backgroundColor: "rgba(33, 37, 41, 0.85)",
+          }}
+        >
           <Card.Body className="p-4">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -69,13 +71,16 @@ const RegisterPage = () => {
                   Create Account
                 </motion.span>
               </h2>
-              
+
               {error && (
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                 >
-                  <Alert variant="danger" className="border-0 bg-danger bg-opacity-10">
+                  <Alert
+                    variant="danger"
+                    className="border-0 bg-danger bg-opacity-10"
+                  >
                     {error}
                   </Alert>
                 </motion.div>
@@ -83,10 +88,34 @@ const RegisterPage = () => {
 
               <Form onSubmit={handleSubmit}>
                 {[
-                  { label: "Username", name: "username", type: "text", icon: <FiUser/>, delay: 0.4 },
-                  { label: "Email", name: "email", type: "email", icon: <FiMail/>, delay: 0.5 },
-                  { label: "Password", name: "password", type: "password", icon: <FiLock/>, delay: 0.6 },
-                  { label: "Confirm Password", name: "confirmPassword", type: "password", icon: <FiCheckCircle/>, delay: 0.7 }
+                  {
+                    label: "Username",
+                    name: "username",
+                    type: "text",
+                    icon: <FiUser />,
+                    delay: 0.4,
+                  },
+                  {
+                    label: "Email",
+                    name: "email",
+                    type: "email",
+                    icon: <FiMail />,
+                    delay: 0.5,
+                  },
+                  {
+                    label: "Password",
+                    name: "password",
+                    type: "password",
+                    icon: <FiLock />,
+                    delay: 0.6,
+                  },
+                  {
+                    label: "Confirm Password",
+                    name: "confirmPassword",
+                    type: "password",
+                    icon: <FiCheckCircle />,
+                    delay: 0.7,
+                  },
                 ].map((field) => (
                   <motion.div
                     key={field.name}
@@ -104,12 +133,17 @@ const RegisterPage = () => {
                           name={field.name}
                           placeholder={field.label}
                           value={formData[field.name]}
-                          onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              [field.name]: e.target.value,
+                            })
+                          }
                           required
                           className="bg-transparent text-light border-start-0"
-                          style={{ 
-                            boxShadow: 'none',
-                            borderColor: 'rgba(75, 139, 190, 0.2)'
+                          style={{
+                            boxShadow: "none",
+                            borderColor: "rgba(75, 139, 190, 0.2)",
                           }}
                         />
                       </div>
@@ -122,24 +156,25 @@ const RegisterPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
                 >
-                  <Button 
-                    variant="primary" 
-                    type="submit" 
+                  <Button
+                    variant="primary"
+                    type="submit"
                     className="w-100 mb-3 py-2 rounded-pill"
                     style={{
-                      background: 'linear-gradient(90deg, #4b8bbe 0%, #306998 100%)',
-                      border: 'none',
-                      boxShadow: '0 4px 15px rgba(75, 139, 190, 0.2)'
+                      background:
+                        "linear-gradient(90deg, #4b8bbe 0%, #306998 100%)",
+                      border: "none",
+                      boxShadow: "0 4px 15px rgba(75, 139, 190, 0.2)",
                     }}
                   >
                     Sign Up
                   </Button>
                   <div className="text-center text-secondary mt-4">
-                    Already have an account?{' '}
-                    <Link 
-                      to="/login" 
+                    Already have an account?{" "}
+                    <Link
+                      to="/login"
                       className="text-primary text-decoration-none"
-                      style={{ fontWeight: '500' }}
+                      style={{ fontWeight: "500" }}
                     >
                       Login
                     </Link>

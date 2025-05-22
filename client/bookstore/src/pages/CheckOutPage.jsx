@@ -43,9 +43,12 @@ const CheckOutPage = () => {
 
   const fetchCartItems = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/cart-items/", {
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/cart-items/`,
+        {
+          headers: { Authorization: `Bearer ${authTokens.access}` },
+        }
+      );
       if (res.data.length === 0) {
         showAlert("Your cart is empty", "warning");
         setTimeout(() => navigate("/cart"), 2000);
@@ -121,7 +124,7 @@ const CheckOutPage = () => {
       console.log("Checkout Request Payload:", payload);
 
       const response = await axios.post(
-        "http://localhost:8000/api/orders/",
+        `${import.meta.env.VITE_API_URL}/api/orders/`,
         payload,
         {
           headers: {

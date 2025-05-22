@@ -27,9 +27,12 @@ const OrdersPage = () => {
     if (!authTokens) return;
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:8000/api/orders/", {
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/orders/`,
+        {
+          headers: { Authorization: `Bearer ${authTokens.access}` },
+        }
+      );
       const sortedOrders = res.data.sort(
         (a, b) => new Date(b.order_date) - new Date(a.order_date)
       );

@@ -28,9 +28,12 @@ function Header() {
     const fetchCartCount = async () => {
       if (!authTokens) return;
       try {
-        const res = await axios.get("http://localhost:8000/api/cart-items/", {
-          headers: { Authorization: `Bearer ${authTokens.access}` },
-        });
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/cart-items/`,
+          {
+            headers: { Authorization: `Bearer ${authTokens.access}` },
+          }
+        );
         // Calculate total quantity instead of just counting items
         const totalQuantity = res.data.reduce(
           (sum, item) => sum + item.quantity,

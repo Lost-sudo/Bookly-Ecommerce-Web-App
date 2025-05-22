@@ -3,7 +3,13 @@ import { Container, Card, Row, Col, Button } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaShoppingCart, FaMinus, FaPlus, FaTrash, FaArrowRight } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaMinus,
+  FaPlus,
+  FaTrash,
+  FaArrowRight,
+} from "react-icons/fa";
 import axios from "axios";
 import CustomAlert from "../components/CustomAlert";
 import { useAlert } from "../hooks/useAlert";
@@ -21,9 +27,12 @@ const CartPage = () => {
 
   const fetchCartItems = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/cart-items/", {
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/cart-items/`,
+        {
+          headers: { Authorization: `Bearer ${authTokens.access}` },
+        }
+      );
       setCartItems(res.data);
     } catch (error) {
       showAlert("Failed to load cart items", "error");
@@ -44,7 +53,7 @@ const CartPage = () => {
 
     try {
       const res = await axios.patch(
-        `http://localhost:8000/api/cart-items/${id}/`,
+        `${import.meta.env.VITE_API_URL}/api/cart-items/${id}/`,
         { quantity: newQuantity },
         {
           headers: { Authorization: `Bearer ${authTokens.access}` },
@@ -64,9 +73,12 @@ const CartPage = () => {
 
   const handleRemoveItem = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/cart-items/${id}/`, {
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/cart-items/${id}/`,
+        {
+          headers: { Authorization: `Bearer ${authTokens.access}` },
+        }
+      );
       setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
       showAlert("Item removed from cart", "success");
     } catch (error) {
@@ -93,7 +105,7 @@ const CartPage = () => {
         show={alert.show}
         message={alert.message}
         type={alert.type}
-        onClose={() => setAlert(prev => ({ ...prev, show: false }))}
+        onClose={() => setAlert((prev) => ({ ...prev, show: false }))}
       />
 
       <motion.div
@@ -119,8 +131,8 @@ const CartPage = () => {
             className="text-center py-5"
           >
             <h4 className="text-muted mb-4">Your cart is empty</h4>
-            <Button 
-              variant="primary" 
+            <Button
+              variant="primary"
               onClick={() => navigate("/")}
               className="px-4 py-2"
             >
@@ -137,16 +149,16 @@ const CartPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    transition={{ 
+                    transition={{
                       duration: 0.3,
-                      delay: index * 0.1 
+                      delay: index * 0.1,
                     }}
                   >
                     <Card className="cart-item-card mb-3 bg-dark border border-primary glass-effect rounded-3">
                       <Card.Body>
                         <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
                           <div className="mb-3 mb-md-0">
-                            <motion.h5 
+                            <motion.h5
                               className="mb-1"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
@@ -154,20 +166,26 @@ const CartPage = () => {
                             >
                               {item.book.title}
                             </motion.h5>
-                            <p className="text-muted mb-0">{item.book.author}</p>
+                            <p className="text-muted mb-0">
+                              {item.book.author}
+                            </p>
                           </div>
-                          
+
                           <div className="d-flex align-items-center gap-3">
                             <div className="quantity-controls">
                               <Button
                                 variant="outline-secondary"
                                 size="sm"
-                                onClick={() => handleQuantityChange(item.id, -1)}
+                                onClick={() =>
+                                  handleQuantityChange(item.id, -1)
+                                }
                                 className="quantity-btn"
                               >
                                 <FaMinus size={12} />
                               </Button>
-                              <span className="mx-3 fw-bold">{item.quantity}</span>
+                              <span className="mx-3 fw-bold">
+                                {item.quantity}
+                              </span>
                               <Button
                                 variant="outline-secondary"
                                 size="sm"
@@ -177,8 +195,8 @@ const CartPage = () => {
                                 <FaPlus size={12} />
                               </Button>
                             </div>
-                            
-                            <motion.h5 
+
+                            <motion.h5
                               className="mb-0 text-primary"
                               initial={{ scale: 0.8 }}
                               animate={{ scale: 1 }}
@@ -186,7 +204,7 @@ const CartPage = () => {
                             >
                               ₱{(item.book.price * item.quantity).toFixed(2)}
                             </motion.h5>
-                            
+
                             <Button
                               variant="link"
                               className="text-danger p-0 remove-btn"
@@ -209,7 +227,10 @@ const CartPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <Card className="bg-dark border border-primary glass-effect rounded-3 sticky-top" style={{ top: "2rem" }}>
+                <Card
+                  className="bg-dark border border-primary glass-effect rounded-3 sticky-top"
+                  style={{ top: "2rem" }}
+                >
                   <Card.Body>
                     <h5 className="text-primary mb-4">Cart Summary</h5>
                     <div className="d-flex justify-content-between mb-3">

@@ -46,7 +46,7 @@ const BookCard = ({ id, cover, title, author, price, onAddToCart }) => {
     setIsLoading(true);
     try {
       await axios.post(
-        "http://localhost:8000/api/cart-items/",
+        `${import.meta.env.VITE_API_URL}/api/cart-items/`,
         { book: id, quantity: 1 },
         {
           headers: { Authorization: `Bearer ${authTokens.access}` },

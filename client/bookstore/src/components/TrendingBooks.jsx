@@ -26,7 +26,7 @@ function TrendingBooks() {
     const fetchTrendingBooks = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/books/trending/"
+          `${import.meta.env.VITE_API_URL}/api/books/trending/`
         );
         setTrending(res.data);
       } catch (error) {
@@ -44,7 +44,7 @@ function TrendingBooks() {
     }
     try {
       await axios.post(
-        "http://localhost:8000/api/cart-items/",
+        `${import.meta.env.VITE_API_URL}/api/cart-items/`,
         { book: id, quantity: 1 },
         {
           headers: { Authorization: `Bearer ${authTokens.access}` },

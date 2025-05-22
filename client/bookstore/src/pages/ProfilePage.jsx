@@ -65,9 +65,13 @@ const ProfilePage = () => {
     e.preventDefault();
     setSaving(true);
     try {
-      await axios.patch("http://localhost:8000/api/auth/profile/", infoForm, {
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      });
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/api/auth/profile/`,
+        infoForm,
+        {
+          headers: { Authorization: `Bearer ${authTokens.access}` },
+        }
+      );
       setUser((prev) => ({ ...prev, ...infoForm }));
       setShowInfoModal(false);
     } catch (err) {
@@ -93,9 +97,13 @@ const ProfilePage = () => {
     e.preventDefault();
     setEditSaving(true);
     try {
-      await axios.patch("http://localhost:8000/api/auth/profile/", editForm, {
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      });
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/api/auth/profile/`,
+        editForm,
+        {
+          headers: { Authorization: `Bearer ${authTokens.access}` },
+        }
+      );
       setUser((prev) => ({ ...prev, ...editForm }));
       setShowEditModal(false);
     } catch (err) {
@@ -128,7 +136,7 @@ const ProfilePage = () => {
     setPasswordSaving(true);
     try {
       await axios.post(
-        "http://localhost:8000/api/auth/change-password/",
+        `${import.meta.env.VITE_API_URL}/api/auth/change-password/`,
         {
           current_password: passwordForm.current_password,
           new_password: passwordForm.new_password,
