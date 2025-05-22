@@ -9,10 +9,10 @@ class BookAdminSerializer(serializers.ModelSerializer):
 
 class BookCustomerSerializer(serializers.ModelSerializer):
     genre = serializers.StringRelatedField()
-    subgenre = serializers.StringRelatedField()
+    sub_genre = serializers.StringRelatedField()
     category = serializers.StringRelatedField()
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'description', 'price', 'category', 'genre', 'subgenre', 'cover_image']
+        fields = ['id', 'title', 'author', 'description', 'price', 'category', 'genre', 'sub_genre', 'cover_image']
         read_only_fields = ['id']
