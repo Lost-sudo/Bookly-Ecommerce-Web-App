@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'cart',
     'orders',
     'your_app.apps.YourAppConfig',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -158,3 +160,11 @@ CORS_ALLOW_CREDENTIALS = True
 # Ensure empty string does not result in [""] (which is not valid)
 if not CORS_ALLOW_ALL_ORIGINS:
     CORS_ALLOWED_ORIGINS = [o for o in CORS_ALLOWED_ORIGINS if o.strip()]
+
+# Cloudinary settings
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'diunsz5xa',
+    'API_KEY': '514267547677748',
+    'API_SECRET': 'HQcArXMCylaOP4KKCnbsOWfRSK8',
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
