@@ -34,6 +34,10 @@ const OrdersPage = () => {
       );
       // Debug log to inspect the response
       console.log("Fetched orders:", res.data);
+      // Add this line to inspect the first order's keys
+      if (Array.isArray(res.data) && res.data.length > 0) {
+        console.log("Order keys:", Object.keys(res.data[0]));
+      }
       const sortedOrders = res.data.sort(
         (a, b) => new Date(b.order_date) - new Date(a.order_date)
       );
@@ -47,11 +51,16 @@ const OrdersPage = () => {
     }
   };
 
+  // Use the correct field name for order status
+  // Try both snake_case and camelCase for robustness
+  const getOrderStatus = (order) =>
+    order.order_status || order.orderStatus || "";
+
   const currentOrders = orders.filter((o) =>
-    ["pending", "shipped"].includes(o.order_status?.toLowerCase())
+    ["pending", "shipped"].includes(getOrderStatus(o).toLowerCase())
   );
   const pastOrders = orders.filter((o) =>
-    ["delivered", "cancelled"].includes(o.order_status?.toLowerCase())
+    ["delivered", "cancelled"].includes(getOrderStatus(o).toLowerCase())
   );
 
   if (loading) return <LoadingSpinner />;
