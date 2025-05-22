@@ -64,6 +64,11 @@ class OrderSerializer(serializers.ModelSerializer):
             updated = True
         if updated:
             user.save()
+        # --- Save user info snapshot on the order ---
+        validated_data['full_name'] = full_name or user.full_name
+        validated_data['phone_number'] = phone_number or user.phone_number
+        validated_data['address'] = address or user.address
+        # --- end add ---
         return super().create(validated_data)
 
     def get_user_full_name(self, obj):
