@@ -28,7 +28,7 @@ class Book(models.Model):
     sub_genre = models.ForeignKey(SubGenre, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField()
-    cover_image = models.ImageField(upload_to='book_covers/', null=True, blank=True)
+    cover_image = models.ImageField(upload_to='covers/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
