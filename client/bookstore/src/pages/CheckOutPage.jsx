@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card, Row, Col, Button, Form } from "react-bootstrap";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {

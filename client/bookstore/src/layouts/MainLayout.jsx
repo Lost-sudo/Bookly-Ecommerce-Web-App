@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ThemeProvider, useTheme } from "../context/ThemeContext";
+import { ThemeProvider, useTheme } from "../context/ThemeContext.jsx";
 
 const ThemeSync = () => {
   const { theme } = useTheme();

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card, Row, Col, Badge, Alert } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import axios from "axios";
 import {
   FaBox,

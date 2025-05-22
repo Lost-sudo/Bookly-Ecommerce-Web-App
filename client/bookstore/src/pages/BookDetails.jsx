@@ -4,7 +4,7 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { FaShoppingCart, FaCheck, FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import CustomAlert from "../components/CustomAlert";
 
 const BookDetails = () => {

@@ -4,7 +4,7 @@ import { Row, Col, ButtonGroup, Button } from "react-bootstrap";
 import BookCard from "./BookCard";
 import FilterSidebar from "./FilterSidebar";
 import { FaTh, FaBars } from "react-icons/fa";
-import { fetchAllBooks } from "../api/bookApi.js";
+import { fetchAllBooks } from "../api/bookAPI.js";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);

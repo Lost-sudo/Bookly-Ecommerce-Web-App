@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Form, Button, Alert, Container, Card } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import { FiUser, FiLock } from "react-icons/fi";
 import axios from "axios";
 

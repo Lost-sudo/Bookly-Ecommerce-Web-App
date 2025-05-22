@@ -13,8 +13,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaSun, FaMoon } from "react-icons/fa";
 import { motion } from "framer-motion";
 import logo from "../../public/images/bookly-logo.png";
-import { useAuth } from "../context/AuthContext";
-import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext.jsx";
+import { useTheme } from "../context/ThemeContext.jsx";
 import axios from "axios";
 
 function Header() {

@@ -1,6 +1,6 @@
 import { Accordion, Form } from "react-bootstrap";
 import { FaFilter } from "react-icons/fa";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../context/ThemeContext.jsx";
 
 const FilterSidebar = ({
   selectedGenres,

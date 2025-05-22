@@ -6,7 +6,6 @@ import FilterSidebar from "../components/FilterSidebar";
 import AllBooks from "../components/AllBooks";
 
 const Homepage = () => {
-
   return (
     <>
       <div className="homepage bg-dark text-light pb-5 mb-5">
@@ -14,10 +13,9 @@ const Homepage = () => {
         <TrendingBooks />
 
         <Container fluid className="mt-4">
-            <AllBooks />
+          <AllBooks />
         </Container>
       </div>
-
     </>
   );
 };

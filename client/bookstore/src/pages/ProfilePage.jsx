@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import { getUser } from "../api/user";
 import { motion } from "framer-motion";
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";

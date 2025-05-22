@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { FaShoppingCart, FaCheck } from "react-icons/fa";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CustomAlert from "./CustomAlert";
