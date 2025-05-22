@@ -10,3 +10,4 @@ django-filter
 django-environ
 cloudinary
 django-cloudinary-storage
+Pillow
