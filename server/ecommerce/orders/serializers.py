@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Order
 from products.models import Book
 from cart.models import CartItem
+from cart.serializers import CartItemSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -76,5 +77,6 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_cart_items(self, obj):
         if obj.cart:
-            return CartItemOrderSerializer(obj.cart.items.all(), many=True).data
+            items = obj.cart.items.all()
+            return CartItemSerializer(items, many=True).data
         return []
