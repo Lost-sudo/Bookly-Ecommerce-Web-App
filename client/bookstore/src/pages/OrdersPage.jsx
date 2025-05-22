@@ -11,7 +11,6 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import LoadingSpinner from "../components/LoadingSpinner";
-import placeholderImg from "../../public/images/placeholder-img.jpg";
 
 const OrdersPage = () => {
   const { authTokens } = useAuth();
