@@ -41,6 +41,7 @@ const OrdersPage = () => {
       setError(null);
     } catch (err) {
       setError("Failed to load orders. Please try again.");
+      console.error("Error fetching orders:", err);
     } finally {
       setLoading(false);
     }
@@ -173,8 +174,9 @@ const OrderCard = ({ order, index }) => (
           </div>
         </div>
         <div className="order-items">
-          {Array.isArray(order.cart_items) && order.cart_items.length > 0 ? (
-            order.cart_items.map(
+          {(Array.isArray(order.cart_items) ? order.cart_items : []).length >
+          0 ? (
+            (order.cart_items || []).map(
               (item, idx) =>
                 item &&
                 item.book && (

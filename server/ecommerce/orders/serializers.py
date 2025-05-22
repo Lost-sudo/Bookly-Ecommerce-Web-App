@@ -19,7 +19,7 @@ class CartItemOrderSerializer(serializers.ModelSerializer):
         fields = ['id', 'book', 'quantity']
 
 class OrderSerializer(serializers.ModelSerializer):
-    cart_items = CartItemOrderSerializer(many=True, read_only=True)
+    cart_items = serializers.SerializerMethodField()
     full_name = serializers.CharField(write_only=True, required=False)
     phone_number = serializers.CharField(write_only=True, required=False)
     address = serializers.CharField(write_only=True, required=False)
@@ -40,11 +40,7 @@ class OrderSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        if instance.cart:
-            cart_items = instance.cart.items.all()
-            ret['cart_items'] = CartItemOrderSerializer(cart_items, many=True).data
-        else:
-            ret['cart_items'] = []
+        ret['cart_items'] = self.get_cart_items(instance)
         ret['user_full_name'] = getattr(instance.user, 'full_name', '')
         ret['user_phone_number'] = getattr(instance.user, 'phone_number', '')
         ret['user_address'] = getattr(instance.user, 'address', '')
@@ -77,3 +73,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_user_address(self, obj):
         return getattr(obj.user, 'address', '')
+
+    def get_cart_items(self, obj):
+        if obj.cart:
+            return CartItemOrderSerializer(obj.cart.items.all(), many=True).data
+        return []
