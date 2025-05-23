@@ -362,6 +362,21 @@ html {
   .badge {
     padding: 0.4rem 0.8rem;
   }
+
+  .order-card {
+    margin-bottom: 1rem;
+  }
+  .order-card .row > div {
+    margin-bottom: 0.5rem;
+  }
+  .order-card ul {
+    padding-left: 1rem;
+  }
+  .order-card .card-footer {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.5rem;
+  }
 }
 
 /* Checkout Page Specific Styles */
@@ -465,4 +480,10 @@ html {
 
 .text-secondary {
   color: #888 !important; /* Slightly lighter for placeholders */
+}
+
+.sticky-top {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1040 !important;
 }

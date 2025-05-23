@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
+  Navbar,
   Container,
   Nav,
-  Navbar,
   NavDropdown,
   Form,
   FormControl,
   Dropdown,
   Badge,
+  Offcanvas,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaSun, FaMoon } from "react-icons/fa";
@@ -23,6 +24,7 @@ function Header() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [cartCount, setCartCount] = useState(0);
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   useEffect(() => {
     const fetchCartCount = async () => {
@@ -61,7 +63,9 @@ function Header() {
     <Navbar
       bg={theme === "dark" ? "dark" : "light"}
       variant={theme === "dark" ? "dark" : "light"}
-      className="py-3 shadow-sm"
+      className="py-3 shadow-sm sticky-top"
+      expand="md"
+      style={{ zIndex: 1040 }}
     >
       <Container
         fluid
@@ -81,65 +85,73 @@ function Header() {
           Bookly
         </Navbar.Brand>
 
-        {/* Center: Dropdowns */}
-        <Nav className="d-flex justify-content-center gap-4">
-          <NavDropdown
-            title={
-              <span style={{ color: theme === "dark" ? "#fff" : "#23272b" }}>
+        <Navbar.Toggle
+          aria-controls="main-navbar-offcanvas"
+          onClick={() => setShowOffcanvas(true)}
+          className="d-md-none"
+        />
+
+        <Navbar.Collapse className="d-none d-md-flex">
+          {/* Center: Dropdowns */}
+          <Nav className="d-flex justify-content-center gap-4 mx-auto">
+            <NavDropdown
+              title={
+                <span style={{ color: theme === "dark" ? "#fff" : "#23272b" }}>
+                  Fiction
+                </span>
+              }
+              id="fiction-dropdown"
+              menuVariant={theme === "dark" ? "dark" : "light"}
+            >
+              <NavDropdown.Item as={Link} to="/genre/fiction/fantasy">
+                Fantasy
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/genre/fiction/romance">
+                Romance
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/genre/fiction/mystery">
+                Mystery
+              </NavDropdown.Item>
+            </NavDropdown>
+
+            <NavDropdown
+              title={
+                <span style={{ color: theme === "dark" ? "#fff" : "#23272b" }}>
+                  Non-Fiction
+                </span>
+              }
+              id="nonfiction-dropdown"
+              menuVariant={theme === "dark" ? "dark" : "light"}
+            >
+              <NavDropdown.Item as={Link} to="/genre/non-fiction/biography">
+                Biography
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/genre/non-fiction/history">
+                History
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/genre/non-fiction/self-help">
+                Self-Help
+              </NavDropdown.Item>
+            </NavDropdown>
+
+            <NavDropdown
+              title={
+                <span style={{ color: theme === "dark" ? "#fff" : "#23272b" }}>
+                  Children
+                </span>
+              }
+              id="children-dropdown"
+              menuVariant={theme === "dark" ? "dark" : "light"}
+            >
+              <NavDropdown.Item as={Link} to="/genre/children/fiction">
                 Fiction
-              </span>
-            }
-            id="fiction-dropdown"
-            menuVariant={theme === "dark" ? "dark" : "light"}
-          >
-            <NavDropdown.Item as={Link} to="/genre/fiction/fantasy">
-              Fantasy
-            </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/fiction/romance">
-              Romance
-            </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/fiction/mystery">
-              Mystery
-            </NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown
-            title={
-              <span style={{ color: theme === "dark" ? "#fff" : "#23272b" }}>
-                Non-Fiction
-              </span>
-            }
-            id="nonfiction-dropdown"
-            menuVariant={theme === "dark" ? "dark" : "light"}
-          >
-            <NavDropdown.Item as={Link} to="/genre/non-fiction/biography">
-              Biography
-            </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/non-fiction/history">
-              History
-            </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/non-fiction/self-help">
-              Self-Help
-            </NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown
-            title={
-              <span style={{ color: theme === "dark" ? "#fff" : "#23272b" }}>
-                Children
-              </span>
-            }
-            id="children-dropdown"
-            menuVariant={theme === "dark" ? "dark" : "light"}
-          >
-            <NavDropdown.Item as={Link} to="/genre/children/fiction">
-              Fiction
-            </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/genre/children/educational">
-              Educational
-            </NavDropdown.Item>
-          </NavDropdown>
-        </Nav>
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/genre/children/educational">
+                Educational
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
 
         <div className="d-flex align-items-center gap-3">
           {/* Theme Switch Button */}
@@ -158,7 +170,7 @@ function Header() {
             {theme === "dark" ? <FaSun /> : <FaMoon />}
           </button>
 
-          <Form className="d-flex" onSubmit={handleSearch}>
+          <Form className="d-none d-md-flex" onSubmit={handleSearch}>
             <FormControl
               type="search"
               placeholder="Search books..."
@@ -238,6 +250,165 @@ function Header() {
           </Dropdown>
         </div>
       </Container>
+
+      {/* Offcanvas for mobile */}
+      <Offcanvas
+        show={showOffcanvas}
+        onHide={() => setShowOffcanvas(false)}
+        placement="start"
+        className={theme === "dark" ? "bg-dark text-light" : ""}
+        id="main-navbar-offcanvas"
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>
+            <img src={logo} alt="Bookly Logo" height="30" className="me-2" />
+            Bookly
+          </Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <Nav className="flex-column gap-2">
+            <NavDropdown
+              title="Fiction"
+              id="fiction-dropdown-mobile"
+              menuVariant={theme === "dark" ? "dark" : "light"}
+            >
+              <NavDropdown.Item
+                as={Link}
+                to="/genre/fiction/fantasy"
+                onClick={() => setShowOffcanvas(false)}
+              >
+                Fantasy
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                to="/genre/fiction/romance"
+                onClick={() => setShowOffcanvas(false)}
+              >
+                Romance
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                to="/genre/fiction/mystery"
+                onClick={() => setShowOffcanvas(false)}
+              >
+                Mystery
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown
+              title="Non-Fiction"
+              id="nonfiction-dropdown-mobile"
+              menuVariant={theme === "dark" ? "dark" : "light"}
+            >
+              <NavDropdown.Item
+                as={Link}
+                to="/genre/non-fiction/biography"
+                onClick={() => setShowOffcanvas(false)}
+              >
+                Biography
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                to="/genre/non-fiction/history"
+                onClick={() => setShowOffcanvas(false)}
+              >
+                History
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                to="/genre/non-fiction/self-help"
+                onClick={() => setShowOffcanvas(false)}
+              >
+                Self-Help
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown
+              title="Children"
+              id="children-dropdown-mobile"
+              menuVariant={theme === "dark" ? "dark" : "light"}
+            >
+              <NavDropdown.Item
+                as={Link}
+                to="/genre/children/fiction"
+                onClick={() => setShowOffcanvas(false)}
+              >
+                Fiction
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                to="/genre/children/educational"
+                onClick={() => setShowOffcanvas(false)}
+              >
+                Educational
+              </NavDropdown.Item>
+            </NavDropdown>
+            <Form
+              className="my-3"
+              onSubmit={(e) => {
+                handleSearch(e);
+                setShowOffcanvas(false);
+              }}
+            >
+              <FormControl
+                type="search"
+                placeholder="Search books..."
+                className="search-input"
+                aria-label="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  color: theme === "dark" ? "#fff" : "#23272b",
+                  backgroundColor: theme === "dark" ? "#23272b" : "#fff",
+                }}
+              />
+            </Form>
+            <Nav.Link
+              as={Link}
+              to="/cart"
+              onClick={() => setShowOffcanvas(false)}
+            >
+              <FaShoppingCart className="me-2" />
+              Cart {cartCount > 0 && <Badge bg="primary">{cartCount}</Badge>}
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to="/profile"
+              onClick={() => setShowOffcanvas(false)}
+            >
+              <FaUser className="me-2" />
+              Profile
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to="/orders"
+              onClick={() => setShowOffcanvas(false)}
+            >
+              Orders
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                logout();
+                setShowOffcanvas(false);
+              }}
+            >
+              Logout
+            </Nav.Link>
+            <div className="mt-3">
+              <Button
+                variant={theme === "dark" ? "outline-light" : "outline-dark"}
+                onClick={toggleTheme}
+                className="w-100"
+              >
+                {theme === "dark" ? (
+                  <FaSun className="me-2" />
+                ) : (
+                  <FaMoon className="me-2" />
+                )}
+                {theme === "dark" ? "Light Mode" : "Dark Mode"}
+              </Button>
+            </div>
+          </Nav>
+        </Offcanvas.Body>
+      </Offcanvas>
     </Navbar>
   );
 }
