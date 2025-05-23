@@ -156,7 +156,11 @@ const CartPage = () => {
                   >
                     <Card className="cart-item-card mb-3 bg-dark border border-primary glass-effect rounded-3">
                       <Card.Body>
-                        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                        <div
+                          className="d-flex flex-column flex-md-row justify-content-between align-items-md-center"
+                          onClick={() => navigate(`/book/${item.book.id}`)}
+                          style={{ cursor: "pointer" }}
+                        >
                           <div className="mb-3 mb-md-0">
                             <motion.h5
                               className="mb-1"
