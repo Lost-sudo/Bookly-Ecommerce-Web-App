@@ -126,7 +126,11 @@ const BookDetails = () => {
               <Card className="bg-dark border border-primary glass-effect">
                 <Card.Img
                   variant="top"
-                  src={book.cover_image}
+                  src={
+                    book.cover_image
+                      ? book.cover_image.replace(/^http:\/\//, "https://")
+                      : book.cover_image
+                  }
                   alt={book.title}
                   className="img-fluid rounded"
                   style={{ aspectRatio: "2/3", objectFit: "cover" }}
@@ -172,9 +176,13 @@ const BookDetails = () => {
                 <Card.Body>
                   <h5 className="mb-3">Description</h5>
                   <p className="text-muted mb-0">
-                    {book.description && book.description.trim()
-                      ? book.description
-                      : <span className="fst-italic text-secondary">No description available.</span>}
+                    {book.description && book.description.trim() ? (
+                      book.description
+                    ) : (
+                      <span className="fst-italic text-secondary">
+                        No description available.
+                      </span>
+                    )}
                   </p>
                 </Card.Body>
               </Card>

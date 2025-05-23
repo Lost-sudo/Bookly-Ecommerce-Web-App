@@ -80,7 +80,11 @@ const BookCard = ({ id, cover, title, author, price, onAddToCart }) => {
       <div className="book-card-wrapper">
         <Card className="book-card" onClick={() => navigate(`/book/${id}`)}>
           <div className="book-cover-wrapper">
-            <Card.Img src={cover} alt={title} className="book-cover" />
+            <Card.Img
+              src={cover ? cover.replace(/^http:\/\//, "https://") : cover}
+              alt={title}
+              className="book-cover"
+            />
           </div>
           <Card.Body className="book-content">
             <div className="book-info">

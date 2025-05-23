@@ -130,7 +130,11 @@ const AllBooks = () => {
                 title={book.title}
                 author={book.author}
                 price={book.price}
-                cover={book.cover_image}
+                cover={
+                  book.cover_image
+                    ? book.cover_image.replace(/^http:\/\//, "https://")
+                    : book.cover_image
+                }
               />
             </Col>
           ))}
