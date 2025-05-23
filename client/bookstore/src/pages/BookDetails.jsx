@@ -27,16 +27,7 @@ const BookDetails = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/books/${id}/`
         );
-        const data = response.data;
-
-        // Add fallback values for missing fields
-        setBook({
-          ...data,
-          description: data.description || "No description available.",
-          genre: data.genre || "Unknown",
-          sub_genre: data.sub_genre || "Unknown",
-          category: data.category || "Uncategorized",
-        });
+        setBook(response.data);
       } catch (error) {
         setAlert({
           show: true,
@@ -154,11 +145,13 @@ const BookDetails = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <h2 className="mb-2">{book.title}</h2>
-              <p className="text-muted mb-4">by {book.author || "Unknown Author"}</p>
+              <h2 className="mb-2">{book.title || "Unknown Title"}</h2>
+              <p className="text-muted mb-4">
+                by {book.author || "Unknown Author"}
+              </p>
 
               <div className="mb-4">
-                <h4 className="text-primary mb-3">₱{book.price}</h4>
+                <h4 className="text-primary mb-3">₱{book.price || "0.00"}</h4>
                 <Button
                   variant={isAdded ? "success" : "primary"}
                   className="px-4 py-2"
@@ -184,7 +177,13 @@ const BookDetails = () => {
               <Card className="bg-dark border border-secondary glass-effect mb-4">
                 <Card.Body>
                   <h5 className="mb-3">Description</h5>
-                  <p className="text-muted mb-0">{book.description}</p>
+                  <p className="text-muted mb-0">
+                    {book.description?.trim() || (
+                      <span className="fst-italic text-secondary">
+                        No description available.
+                      </span>
+                    )}
+                  </p>
                 </Card.Body>
               </Card>
 
@@ -194,7 +193,8 @@ const BookDetails = () => {
                     <Card.Body>
                       <h6 className="mb-2">Genre</h6>
                       <p className="mb-0 text-muted">
-                        {book.genre} / {book.sub_genre}
+                        {book.genre || "Unknown Genre"} /{" "}
+                        {book.sub_genre || "Unknown Sub-Genre"}
                       </p>
                     </Card.Body>
                   </Card>
@@ -203,7 +203,9 @@ const BookDetails = () => {
                   <Card className="bg-dark border border-secondary glass-effect h-100">
                     <Card.Body>
                       <h6 className="mb-2">Category</h6>
-                      <p className="mb-0 text-muted">{book.category}</p>
+                      <p className="mb-0 text-muted">
+                        {book.category || "Unknown Category"}
+                      </p>
                     </Card.Body>
                   </Card>
                 </Col>
