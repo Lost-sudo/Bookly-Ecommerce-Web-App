@@ -200,8 +200,7 @@ const BookDetails = () => {
                     <Card.Body>
                       <h6 className="mb-2">Genre</h6>
                       <p className="mb-0 text-muted">
-                        {book.genre || "Unknown Genre"} /{" "}
-                        {book.sub_genre || "Unknown Sub-Genre"}
+                        {book.genre || "Unknown Genre"}
                       </p>
                     </Card.Body>
                   </Card>
