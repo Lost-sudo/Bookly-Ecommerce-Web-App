@@ -19,3 +19,18 @@ class BookCustomerSerializer(serializers.ModelSerializer):
         model = Book
         fields = ['id', 'title', 'author', 'description', 'price', 'category', 'genre', 'sub_genre', 'cover_image']
         read_only_fields = ['id']
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = [
+            'id',
+            'title',
+            'author',
+            'description',
+            'price',
+            'cover_image',
+            'genre',
+            'sub_genre',
+            'category',
+        ]

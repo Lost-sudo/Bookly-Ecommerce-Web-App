@@ -6,9 +6,10 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Book
 from accounts.permissions import isAdmin, isCustomer
-from .serializers import BookAdminSerializer, BookCustomerSerializer
+from .serializers import BookAdminSerializer, BookCustomerSerializer, BookSerializer
 from .filters import BookFilter
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.generics import RetrieveAPIView
 
 
 
@@ -31,3 +32,7 @@ class BookAdminViewSet(viewsets.ModelViewSet):
     serializer_class = BookAdminSerializer
     permission_classes = [isAdmin]
     parser_classes = [MultiPartParser, FormParser]
+
+class BookDetailView(RetrieveAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer

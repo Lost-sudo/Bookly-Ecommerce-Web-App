@@ -27,7 +27,7 @@ const BookDetails = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/books/${id}/`
         );
-        setBook(response.data);
+        setBook(response.data); // Ensure the response data is correctly set
       } catch (error) {
         setAlert({
           show: true,
