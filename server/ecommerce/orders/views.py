@@ -9,20 +9,18 @@ from .serializers import OrderSerializer
 from accounts.permissions import isCustomer
 from cart.models import Cart
 from rest_framework.views import APIView
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 logger = logging.getLogger(__name__)
 
-class OrderViewSet(viewsets.ModelViewSet):
+class OrderViewSet(ReadOnlyModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated, isCustomer]
+    queryset = Order.objects.select_related('user').prefetch_related('cart_items__book')
 
     def get_queryset(self):
-        return Order.objects.filter(
-            user=self.request.user
-        ).prefetch_related(
-            'cart__items',
-            'cart__items__book'
-        ).order_by('-order_date')
+        # Filter orders by the authenticated user
+        return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         # Get or create cart for the user

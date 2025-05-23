@@ -21,67 +21,27 @@ class CartItemOrderSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     cart_items = serializers.SerializerMethodField()
-    full_name = serializers.CharField(write_only=True, required=False)
-    phone_number = serializers.CharField(write_only=True, required=False)
-    address = serializers.CharField(write_only=True, required=False)
-    user_full_name = serializers.SerializerMethodField()
-    user_phone_number = serializers.SerializerMethodField()
-    user_address = serializers.SerializerMethodField()
-    
+    full_name = serializers.CharField(source='user.get_full_name', read_only=True)
+    phone_number = serializers.CharField(source='user.phone_number', read_only=True)
+    address = serializers.CharField(source='user.address', read_only=True)
+
     class Meta:
         model = Order
         fields = [
-            'id', 'order_date', 'payment_status',
-            'total_amount', 'order_status', 'transaction_id',
-            'payment_type', 'cart_items', 'created_at',
-            'full_name', 'phone_number', 'address',
-            'user_full_name', 'user_phone_number', 'user_address'
+            'id', 'transaction_id', 'order_date', 'payment_status', 'total_amount',
+            'order_status', 'payment_type', 'cart_items', 'full_name', 'phone_number', 'address'
         ]
-        read_only_fields = ['user', 'cart', 'user_full_name', 'user_phone_number', 'user_address']
-    
-    def to_representation(self, instance):
-        ret = super().to_representation(instance)
-        ret['cart_items'] = self.get_cart_items(instance)
-        ret['user_full_name'] = getattr(instance.user, 'full_name', '')
-        ret['user_phone_number'] = getattr(instance.user, 'phone_number', '')
-        ret['user_address'] = getattr(instance.user, 'address', '')
-        return ret
-
-    def create(self, validated_data):
-        full_name = validated_data.pop('full_name', None)
-        phone_number = validated_data.pop('phone_number', None)
-        address = validated_data.pop('address', None)
-        user = self.context['request'].user
-        updated = False
-        if full_name and getattr(user, 'full_name', None) != full_name:
-            user.full_name = full_name
-            updated = True
-        if phone_number and getattr(user, 'phone_number', None) != phone_number:
-            user.phone_number = phone_number
-            updated = True
-        if address and getattr(user, 'address', None) != address:
-            user.address = address
-            updated = True
-        if updated:
-            user.save()
-        # --- Save user info snapshot on the order ---
-        validated_data['full_name'] = full_name or getattr(user, 'full_name', '')
-        validated_data['phone_number'] = phone_number or getattr(user, 'phone_number', '')
-        validated_data['address'] = address or getattr(user, 'address', '')
-        # --- end add ---
-        return super().create(validated_data)
-
-    def get_user_full_name(self, obj):
-        return getattr(obj.user, 'full_name', '')
-
-    def get_user_phone_number(self, obj):
-        return getattr(obj.user, 'phone_number', '')
-
-    def get_user_address(self, obj):
-        return getattr(obj.user, 'address', '')
 
     def get_cart_items(self, obj):
-        if not obj.cart:
-            return []
-        cart_items = CartItem.objects.filter(cart=obj.cart)
-        return CartItemOrderSerializer(cart_items, many=True).data
+        # Assuming `cart_items` is a related field in the `Order` model
+        return [
+            {
+                "book": {
+                    "title": item.book.title,
+                    "author": item.book.author,
+                    "price": item.book.price,
+                },
+                "quantity": item.quantity,
+            }
+            for item in obj.cart_items.all()
+        ]
