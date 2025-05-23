@@ -7,5 +7,5 @@ router = DefaultRouter()
 router.register(r'orders', OrderViewSet, basename='order')
 
 urlpatterns = [
-    path('orders/', include(router.urls)),  # Corrected path to match /api/orders/
+    path('', include(router.urls)),
 ]
