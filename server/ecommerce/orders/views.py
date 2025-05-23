@@ -14,7 +14,7 @@ from rest_framework.mixins import CreateModelMixin
 
 logger = logging.getLogger(__name__)
 
-class OrderViewSet(ReadOnlyModelViewSet, CreateModelMixin):
+class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated, isCustomer]
     queryset = Order.objects.select_related('user').prefetch_related('cart_items__book')
@@ -26,12 +26,6 @@ class OrderViewSet(ReadOnlyModelViewSet, CreateModelMixin):
     def perform_create(self, serializer):
         # Save the order with the user
         serializer.save(user=self.request.user)
-
-    def create(self, request, *args, **kwargs):
-        serializer = OrderSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 

@@ -25,7 +25,6 @@ const OrdersPage = () => {
       setOrders(res.data);
     } catch (err) {
       setError("Failed to load orders.");
-      console.error("Error fetching orders:", err);
     } finally {
       setLoading(false);
     }
@@ -53,6 +52,29 @@ const OrdersPage = () => {
                   <p>
                     <strong>Total:</strong> ₱{order.total_amount.toFixed(2)}
                   </p>
+                  <p>
+                    <strong>Status:</strong> {order.order_status}
+                  </p>
+                  <p>
+                    <strong>Payment:</strong> {order.payment_type}
+                  </p>
+                  <p>
+                    <strong>Full Name:</strong> {order.full_name}
+                  </p>
+                  <p>
+                    <strong>Phone:</strong> {order.phone_number}
+                  </p>
+                  <p>
+                    <strong>Address:</strong> {order.address}
+                  </p>
+                  <h6>Cart Items:</h6>
+                  {order.cart_items.map((item) => (
+                    <div key={item.id}>
+                      <p>
+                        {item.book.title} × {item.quantity}
+                      </p>
+                    </div>
+                  ))}
                 </Col>
               </Row>
             </Card.Body>

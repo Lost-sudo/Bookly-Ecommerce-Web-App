@@ -22,17 +22,21 @@ class CartItemOrderSerializer(serializers.ModelSerializer):
         model = CartItem
         fields = ['id', 'book', 'quantity']
 
+class UserOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
+
 class OrderSerializer(serializers.ModelSerializer):
-    cart_items = CartItemOrderSerializer(many=True, read_only=True)  # Include cart items
-    full_name = serializers.CharField()
-    phone_number = serializers.CharField()
-    address = serializers.CharField()
+    cart_items = CartItemOrderSerializer(many=True, read_only=True)
+    user = UserOrderSerializer(read_only=True)  # Include user details
 
     class Meta:
         model = Order
         fields = [
             'id', 'transaction_id', 'order_date', 'payment_status', 'total_amount',
-            'order_status', 'payment_type', 'cart_items', 'full_name', 'phone_number', 'address'
+            'order_status', 'payment_type', 'cart_items', 'user', 'full_name',
+            'phone_number', 'address'
         ]
         read_only_fields = ['id', 'order_date', 'user']
 
