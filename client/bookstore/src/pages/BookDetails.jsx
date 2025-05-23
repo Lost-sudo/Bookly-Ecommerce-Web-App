@@ -85,6 +85,14 @@ const BookDetails = () => {
     );
   }
 
+  if (!book) {
+    return (
+      <Container className="py-5 d-flex justify-content-center">
+        <div className="text-danger">Book not found.</div>
+      </Container>
+    );
+  }
+
   return (
     <Container className="py-5 text-light pb-5 mb-5">
       <CustomAlert
@@ -163,7 +171,11 @@ const BookDetails = () => {
               <Card className="bg-dark border border-secondary glass-effect mb-4">
                 <Card.Body>
                   <h5 className="mb-3">Description</h5>
-                  <p className="text-muted mb-0">{book.description}</p>
+                  <p className="text-muted mb-0">
+                    {book.description && book.description.trim()
+                      ? book.description
+                      : <span className="fst-italic text-secondary">No description available.</span>}
+                  </p>
                 </Card.Body>
               </Card>
 
