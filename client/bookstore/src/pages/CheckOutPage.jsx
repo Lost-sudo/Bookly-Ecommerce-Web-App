@@ -142,7 +142,7 @@ const CheckOutPage = () => {
       );
       setCartItems([]);
       setShowConfirmation(false);
-      // setTimeout(() => navigate("/orders"), 2000);
+      setTimeout(() => navigate("/orders"), 2000);
     } catch (error) {
       console.error("Checkout Error Details:", {
         message: error.message,
