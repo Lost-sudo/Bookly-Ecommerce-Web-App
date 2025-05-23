@@ -17,14 +17,13 @@ logger = logging.getLogger(__name__)
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated, isCustomer]
-    queryset = Order.objects.select_related('user').prefetch_related('cart_items__book')
+    queryset = Order.objects.select_related('user', 'cart').all()
 
     def get_queryset(self):
-        # Filter orders by the authenticated user
-        return self.queryset.filter(user=self.request.user)
-
+        user = self.request.user
+        return self.queryset.filter(user=user)
+    
     def perform_create(self, serializer):
-        # Save the order with the user
         serializer.save(user=self.request.user)
         logger.info(f"Order created for user {self.request.user.username}")
 

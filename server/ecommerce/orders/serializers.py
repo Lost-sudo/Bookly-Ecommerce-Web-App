@@ -2,24 +2,21 @@ from rest_framework import serializers
 from .models import Order
 from products.models import Book
 from cart.models import CartItem
-from cart.serializers import CartItemSerializer
 from django.contrib.auth import get_user_model
 import logging
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
 
-class BookOrderSerializer(serializers.ModelSerializer):
+# Add a minimal Book serializer for cart items in orders
+class BookMiniSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Order
-        fields = [
-            'id', 'total_amount', 'payment_type', 'transaction_id',
-            'full_name', 'phone_number', 'address'
-        ]
+        model = Book
+        fields = ['id', 'title', 'author', 'price']
 
 class CartItemOrderSerializer(serializers.ModelSerializer):
-    book = BookOrderSerializer()
-    
+    book = BookMiniSerializer(read_only=True)
+
     class Meta:
         model = CartItem
         fields = ['id', 'book', 'quantity']
@@ -30,8 +27,8 @@ class UserOrderSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
 
 class OrderSerializer(serializers.ModelSerializer):
-    cart_items = CartItemOrderSerializer(many=True, read_only=True)
-    user = UserOrderSerializer(read_only=True)  # Include user details
+    cart_items = CartItemOrderSerializer(many=True, read_only=True, source='cart.items')
+    user = UserOrderSerializer(read_only=True)
 
     class Meta:
         model = Order
@@ -42,21 +39,6 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'order_date', 'user']
 
-    def get_cart_items(self, obj):
-        # Assuming `cart_items` is a related field in the `Order` model
-        return [
-            {
-                "book": {
-                    "title": item.book.title,
-                    "author": item.book.author,
-                    "price": item.book.price,
-                },
-                "quantity": item.quantity,
-            }
-            for item in obj.cart_items.all()
-        ]
-
     def create(self, validated_data):
-        # Log the creation process for debugging
         logger.info(f"Creating order with data: {validated_data}")
         return super().create(validated_data)
