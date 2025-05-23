@@ -230,9 +230,9 @@ function Header() {
               <Dropdown.Item as={Link} to="/profile">
                 Profile
               </Dropdown.Item>
-              <Dropdown.Item as={Link} to="/orders">
+              {/* <Dropdown.Item as={Link} to="/orders">
                 Orders
-              </Dropdown.Item>
+              </Dropdown.Item> */}
               <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

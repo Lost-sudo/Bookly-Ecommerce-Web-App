@@ -78,14 +78,14 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/orders"
           element={
             <PrivateRoute>
               <OrdersPage />
             </PrivateRoute>
           }
-        />
+        /> */}
         <Route
           path="/book/:id"
           element={
