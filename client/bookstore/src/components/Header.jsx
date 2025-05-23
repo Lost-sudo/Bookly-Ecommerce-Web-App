@@ -9,6 +9,7 @@ import {
   Dropdown,
   Badge,
   Offcanvas,
+  Button,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaSun, FaMoon } from "react-icons/fa";
