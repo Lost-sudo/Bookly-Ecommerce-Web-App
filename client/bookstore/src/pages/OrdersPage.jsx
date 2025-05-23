@@ -156,13 +156,7 @@ const OrderSection = ({
 );
 
 const OrderCard = ({ order, index }) => {
-  // Try both cart_items and cart.items for items
-  let items = [];
-  if (Array.isArray(order.cart_items)) {
-    items = order.cart_items;
-  } else if (order.cart && Array.isArray(order.cart.items)) {
-    items = order.cart.items;
-  }
+  const items = Array.isArray(order.cart_items) ? order.cart_items : [];
 
   // Fallbacks for user info
   const fullName =
@@ -230,43 +224,34 @@ const OrderCard = ({ order, index }) => {
           </div>
           <div className="order-items">
             {items.length > 0 ? (
-              items.map(
-                (item, idx) =>
-                  item &&
-                  item.book && (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 + idx * 0.1 }}
-                      className="mb-3"
-                    >
-                      <Row className="align-items-center g-3">
-                        <Col>
-                          <div>
-                            <h6 className="mb-1 fw-semibold">
-                              {item.book.title}
-                            </h6>
-                            <p className="text-muted mb-0 small">
-                              {item.book.author}
-                            </p>
-                            <span className="badge bg-secondary mt-2">
-                              Qty: {item.quantity}
-                            </span>
-                          </div>
-                        </Col>
-                        <Col xs="auto">
-                          <span className="fw-bold text-primary fs-5">
-                            ₱
-                            {item.book.price && item.quantity
-                              ? (item.book.price * item.quantity).toFixed(2)
-                              : "0.00"}
-                          </span>
-                        </Col>
-                      </Row>
-                    </motion.div>
-                  )
-              )
+              items.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 + idx * 0.1 }}
+                  className="mb-3"
+                >
+                  <Row className="align-items-center g-3">
+                    <Col>
+                      <div>
+                        <h6 className="mb-1 fw-semibold">{item.book.title}</h6>
+                        <p className="text-muted mb-0 small">
+                          {item.book.author}
+                        </p>
+                        <span className="badge bg-secondary mt-2">
+                          Qty: {item.quantity}
+                        </span>
+                      </div>
+                    </Col>
+                    <Col xs="auto">
+                      <span className="fw-bold text-primary fs-5">
+                        ₱{(item.book.price * item.quantity).toFixed(2)}
+                      </span>
+                    </Col>
+                  </Row>
+                </motion.div>
+              ))
             ) : (
               <div className="text-muted small">No items in this order.</div>
             )}

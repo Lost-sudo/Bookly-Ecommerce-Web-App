@@ -48,5 +48,7 @@ class OrderViewSet(viewsets.ModelViewSet):
             logger.error(f"Order creation failed: {str(e)}", exc_info=True)
             raise
 
+    queryset = Order.objects.prefetch_related('cart__items__book').all()
+
 
 
