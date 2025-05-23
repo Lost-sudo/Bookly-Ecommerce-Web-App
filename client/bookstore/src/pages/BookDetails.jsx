@@ -153,7 +153,7 @@ const BookDetails = () => {
               <div className="mb-4">
                 <h4 className="text-primary mb-3">
                   ₱
-                  {typeof book.price === "number"
+                  {typeof book.price === "number" && !isNaN(book.price)
                     ? book.price.toFixed(2)
                     : "0.00"}
                 </h4>
