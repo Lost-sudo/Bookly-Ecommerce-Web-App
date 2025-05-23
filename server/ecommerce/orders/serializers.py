@@ -20,7 +20,7 @@ class CartItemOrderSerializer(serializers.ModelSerializer):
         fields = ['id', 'book', 'quantity']
 
 class OrderSerializer(serializers.ModelSerializer):
-    cart_items = serializers.SerializerMethodField()
+    cart_items = CartItemSerializer(many=True, read_only=True)  # Include cart items
     full_name = serializers.CharField(source='user.get_full_name', read_only=True)
     phone_number = serializers.CharField(source='user.phone_number', read_only=True)
     address = serializers.CharField(source='user.address', read_only=True)
@@ -31,6 +31,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'id', 'transaction_id', 'order_date', 'payment_status', 'total_amount',
             'order_status', 'payment_type', 'cart_items', 'full_name', 'phone_number', 'address'
         ]
+        read_only_fields = ['id', 'order_date', 'user']
 
     def get_cart_items(self, obj):
         # Assuming `cart_items` is a related field in the `Order` model
