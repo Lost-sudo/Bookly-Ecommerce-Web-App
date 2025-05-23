@@ -7,9 +7,9 @@
 }
 
 .book-card {
-  width: 180px;
-  min-width: 160px;
-  max-width: 200px;
+  width: 220px; /* Increased width */
+  min-width: 200px;
+  max-width: 240px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -65,8 +65,8 @@
 .book-content {
   display: flex;
   flex-direction: column;
-  height: 110px;
-  padding: 0.75rem 1rem 1rem 1rem;
+  height: 130px; /* Increased height for better spacing */
+  padding: 1rem 1.2rem 1.2rem 1.2rem; /* Adjusted padding */
   background: var(--color-card); /* use theme variable */
   color: var(--color-text); /* use theme variable */
   transition: background 0.3s, color 0.3s;
@@ -108,23 +108,24 @@
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-  height: 40px; /* Increased height for better spacing */
-  padding-top: 0.5rem; /* Added padding for better alignment */
+  height: 50px; /* Increased height for better spacing */
+  padding-top: 0.6rem; /* Adjusted padding */
   border-top: 1px solid var(--color-border); /* Separator for footer */
 }
 
 .book-price {
-  font-size: 1.1rem; /* Slightly larger font size */
+  font-size: 1.3rem; /* Slightly larger font size */
   font-weight: 700;
   color: var(--color-primary);
-  letter-spacing: 0.02em;
-  margin-right: 0.5rem; /* Added margin for spacing */
+  letter-spacing: 0.03em; /* Slightly increased spacing for clarity */
+  margin-right: 0.5rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Added subtle shadow for emphasis */
 }
 
 .cart-button {
-  padding: 0.4rem 1rem; /* Adjusted padding for better size */
+  padding: 0.5rem 1.2rem; /* Adjusted padding for larger button */
   border-radius: 20px; /* More rounded button */
-  font-size: 0.95rem; /* Slightly larger font size */
+  font-size: 1rem; /* Increased font size */
   background: linear-gradient(90deg, #4b8bbe 0%, #306998 100%);
   color: #fff;
   border: none;
@@ -160,13 +161,13 @@
 /* Responsive adjustments */
 @media (max-width: 1200px) {
   .book-card {
-    width: 160px;
-    min-width: 140px;
-    max-width: 180px;
+    width: 200px; /* Adjusted for medium screens */
+    min-width: 180px;
+    max-width: 220px;
   }
   .book-content {
-    height: 100px;
-    padding: 0.7rem 0.7rem 0.9rem 0.7rem;
+    height: 120px; /* Adjusted height */
+    padding: 0.9rem 1rem 1.1rem 1rem;
   }
 }
 
@@ -177,15 +178,15 @@
     max-width: 100%;
   }
   .book-content {
-    height: 90px;
-    padding: 0.6rem 0.6rem 0.8rem 0.6rem;
+    height: 110px; /* Adjusted height */
+    padding: 0.8rem 0.8rem 1rem 0.8rem;
   }
   .cart-button {
-    min-width: 60px;
-    font-size: 0.85rem;
-    padding: 0.28rem 0.7rem;
+    min-width: 70px; /* Adjusted button size */
+    font-size: 0.9rem;
+    padding: 0.35rem 0.8rem;
   }
   .book-price {
-    font-size: 0.98rem;
+    font-size: 1.1rem; /* Slightly larger for better visibility */
   }
 }
