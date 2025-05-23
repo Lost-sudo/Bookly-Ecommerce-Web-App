@@ -458,3 +458,11 @@ html {
   color: #bbb !important;
   opacity: 1;
 }
+
+.text-muted {
+  color: #bbb !important; /* Ensure visibility on dark backgrounds */
+}
+
+.text-secondary {
+  color: #888 !important; /* Slightly lighter for placeholders */
+}

@@ -193,8 +193,15 @@ const BookDetails = () => {
                     <Card.Body>
                       <h6 className="mb-2">Genre</h6>
                       <p className="mb-0 text-muted">
-                        {book.genre || "Unknown Genre"} /{" "}
-                        {book.sub_genre || "Unknown Sub-Genre"}
+                        {book.genre || (
+                          <span className="text-secondary">Unknown Genre</span>
+                        )}{" "}
+                        /{" "}
+                        {book.sub_genre || (
+                          <span className="text-secondary">
+                            Unknown Sub-Genre
+                          </span>
+                        )}
                       </p>
                     </Card.Body>
                   </Card>
@@ -204,7 +211,11 @@ const BookDetails = () => {
                     <Card.Body>
                       <h6 className="mb-2">Category</h6>
                       <p className="mb-0 text-muted">
-                        {book.category || "Unknown Category"}
+                        {book.category || (
+                          <span className="text-secondary">
+                            Unknown Category
+                          </span>
+                        )}
                       </p>
                     </Card.Body>
                   </Card>
