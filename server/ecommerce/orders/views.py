@@ -32,6 +32,13 @@ class OrderViewSet(viewsets.ModelViewSet):
         cart = getattr(order, 'cart', None)
         if cart:
             cart.clear_cart()
+        else:
+            # Fallback: clear user's cart if not attached
+            try:
+                user_cart = Cart.objects.get(user=self.request.user)
+                user_cart.clear_cart()
+            except Cart.DoesNotExist:
+                pass
 
 
 
