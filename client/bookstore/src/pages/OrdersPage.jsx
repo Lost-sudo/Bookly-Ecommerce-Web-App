@@ -13,8 +13,7 @@ import {
 import LoadingSpinner from "../components/LoadingSpinner";
 
 // --- Helper functions moved to top for use everywhere ---
-const getOrderStatus = (order) =>
-  order.order_status || order.orderStatus || "";
+const getOrderStatus = (order) => order.order_status || order.orderStatus || "";
 
 const getStatusIcon = (status) => {
   switch ((status || "").toLowerCase()) {
@@ -63,11 +62,11 @@ const OrdersPage = () => {
         }
       );
       // Debug log to inspect the response
-      console.log("Fetched orders:", res.data);
+      // console.log("Fetched orders:", res.data);
       // Add this line to inspect the first order's keys
-      if (Array.isArray(res.data) && res.data.length > 0) {
-        console.log("Order keys:", Object.keys(res.data[0]));
-      }
+      // if (Array.isArray(res.data) && res.data.length > 0) {
+      //   console.log("Order keys:", Object.keys(res.data[0]));
+      // }
       const sortedOrders = res.data.sort(
         (a, b) => new Date(b.order_date) - new Date(a.order_date)
       );
@@ -178,8 +177,9 @@ const OrderCard = ({ order, index }) => {
 
   // Fallback for payment type
   const paymentType =
-    (order.payment_type || order.paymentType || "").replace("_", " ").toUpperCase() ||
-    "N/A";
+    (order.payment_type || order.paymentType || "")
+      .replace("_", " ")
+      .toUpperCase() || "N/A";
 
   // Fallback for status
   const status = getOrderStatus(order);
@@ -209,10 +209,7 @@ const OrderCard = ({ order, index }) => {
               </small>
             </Col>
             <Col xs="auto">
-              <Badge
-                bg={getStatusBadge(status)}
-                className="px-3 py-2"
-              >
+              <Badge bg={getStatusBadge(status)} className="px-3 py-2">
                 {status
                   ? status.charAt(0).toUpperCase() + status.slice(1)
                   : "Unknown"}
@@ -286,9 +283,7 @@ const OrderCard = ({ order, index }) => {
             </div>
             <div className="text-end">
               <small className="text-muted d-block">Payment Method</small>
-              <span className="badge bg-secondary">
-                {paymentType}
-              </span>
+              <span className="badge bg-secondary">{paymentType}</span>
             </div>
           </div>
         </Card.Body>
