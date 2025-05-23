@@ -8,6 +8,7 @@ from .models import Book
 from accounts.permissions import isAdmin, isCustomer
 from .serializers import BookAdminSerializer, BookCustomerSerializer
 from .filters import BookFilter
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 
@@ -29,3 +30,4 @@ class BookAdminViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookAdminSerializer
     permission_classes = [isAdmin]
+    parser_classes = [MultiPartParser, FormParser]
