@@ -15,6 +15,7 @@ import os
 from datetime import timedelta
 import environ
 import dj_database_url
+import cloudinary_storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -162,4 +163,8 @@ if not CORS_ALLOW_ALL_ORIGINS:
     CORS_ALLOWED_ORIGINS = [o for o in CORS_ALLOWED_ORIGINS if o.strip()]
 
 # Cloudinary settings
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'diunsz5xa',
+    'API_KEY': '514267547677748',
+    'API_SECRET': 'HQcArXMCylaOP4KKCnbsOWfRSK8',
+}
