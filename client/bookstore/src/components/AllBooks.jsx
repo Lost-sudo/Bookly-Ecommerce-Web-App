@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Row, Col, ButtonGroup, Button, Form } from "react-bootstrap";
+import { Row, Col, ButtonGroup, Button, Form, Offcanvas } from "react-bootstrap";
 import BookCard from "./BookCard";
 import FilterSidebar from "./FilterSidebar";
-import { FaTh, FaBars, FaSearch } from "react-icons/fa";
+import { FaTh, FaBars, FaSearch, FaFilter } from "react-icons/fa";
 import { fetchAllBooks } from "../api/bookAPI.js";
 
 const AllBooks = () => {
@@ -11,6 +11,7 @@ const AllBooks = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -71,8 +72,9 @@ const AllBooks = () => {
   }, [selectedGenres, selectedAuthors, books, searchTerm]);
 
   return (
-    <div className="d-flex">
-      <div className="me-4">
+    <div className="d-flex flex-column flex-md-row">
+      {/* Sidebar for larger screens */}
+      <div className="d-none d-md-block me-4">
         <FilterSidebar
           genres={genres}
           authors={authors}
@@ -82,6 +84,27 @@ const AllBooks = () => {
           setSelectedAuthors={setSelectedAuthors}
         />
       </div>
+
+      {/* Offcanvas for smaller screens */}
+      <Offcanvas
+        show={showSidebar}
+        onHide={() => setShowSidebar(false)}
+        placement="start"
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Filters</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <FilterSidebar
+            genres={genres}
+            authors={authors}
+            selectedGenres={selectedGenres}
+            setSelectedGenres={setSelectedGenres}
+            selectedAuthors={selectedAuthors}
+            setSelectedAuthors={setSelectedAuthors}
+          />
+        </Offcanvas.Body>
+      </Offcanvas>
 
       <div
         className="flex-grow-1"
@@ -96,30 +119,40 @@ const AllBooks = () => {
       >
         <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
           <h4 className="fw-bold mb-0">All Books</h4>
-          <Form
-            className="d-flex align-items-center"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <Form.Control
-              type="search"
-              placeholder="Search by title or author"
-              className="me-2"
-              style={{ minWidth: 200, maxWidth: 300 }}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Button variant="outline-primary" disabled>
-              <FaSearch />
+          <div className="d-flex align-items-center gap-2">
+            {/* Filter toggle button for smaller screens */}
+            <Button
+              variant="outline-primary"
+              className="d-md-none"
+              onClick={() => setShowSidebar(true)}
+            >
+              <FaFilter /> Filters
             </Button>
-          </Form>
-          <ButtonGroup>
-            <Button variant="outline-dark">
-              <FaTh />
-            </Button>
-            <Button variant="outline-dark">
-              <FaBars />
-            </Button>
-          </ButtonGroup>
+            <Form
+              className="d-flex align-items-center"
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <Form.Control
+                type="search"
+                placeholder="Search by title or author"
+                className="me-2"
+                style={{ minWidth: 200, maxWidth: 300 }}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Button variant="outline-primary" disabled>
+                <FaSearch />
+              </Button>
+            </Form>
+            <ButtonGroup>
+              <Button variant="outline-dark">
+                <FaTh />
+              </Button>
+              <Button variant="outline-dark">
+                <FaBars />
+              </Button>
+            </ButtonGroup>
+          </div>
         </div>
 
         <Row xs={1} sm={2} md={3} lg={4} className="g-4">
