@@ -124,7 +124,7 @@ const CheckOutPage = () => {
       console.log("Checkout Request Payload:", payload);
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/orders/`,
+        `${import.meta.env.VITE_API_URL}/api/orders/`, // Ensure this matches the backend URL
         payload,
         {
           headers: {

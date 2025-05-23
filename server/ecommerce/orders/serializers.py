@@ -4,8 +4,10 @@ from products.models import Book
 from cart.models import CartItem
 from cart.serializers import CartItemSerializer
 from django.contrib.auth import get_user_model
+import logging
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 class BookOrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,3 +55,8 @@ class OrderSerializer(serializers.ModelSerializer):
             }
             for item in obj.cart_items.all()
         ]
+
+    def create(self, validated_data):
+        # Log the creation process for debugging
+        logger.info(f"Creating order with data: {validated_data}")
+        return super().create(validated_data)

@@ -26,6 +26,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Save the order with the user
         serializer.save(user=self.request.user)
+        logger.info(f"Order created for user {self.request.user.username}")
 
 
 

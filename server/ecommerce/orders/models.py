@@ -1,5 +1,8 @@
 from django.db import models
 from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -50,3 +53,4 @@ class Order(models.Model):
         self.payment_type = payment_type
         self.payment_amount = payment_amount
         self.save()
+        logger.info(f"Order #{self.id} marked as paid with transaction ID {transaction_id}")
