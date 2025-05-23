@@ -3,36 +3,14 @@ import { FaFilter } from "react-icons/fa";
 import { useTheme } from "../context/ThemeContext.jsx";
 
 const FilterSidebar = ({
+  genres,
+  authors,
   selectedGenres,
   setSelectedGenres,
   selectedAuthors,
   setSelectedAuthors,
 }) => {
   const { theme } = useTheme();
-
-  const genres = [
-    "Fiction",
-    "Non-Fiction",
-    "Science Fiction",
-    "Fantasy",
-    "Mystery",
-    "Romance",
-    "Thriller",
-    "Biography",
-    "Self-Help",
-    "History",
-  ];
-
-  const authors = [
-    "J.K. Rowling",
-    "Stephen King",
-    "Agatha Christie",
-    "James Patterson",
-    "George R.R. Martin",
-    "J.R.R. Tolkien",
-    "John Grisham",
-    "Dan Brown",
-  ];
 
   const handleGenreChange = (genre) => {
     setSelectedGenres((prev) =>

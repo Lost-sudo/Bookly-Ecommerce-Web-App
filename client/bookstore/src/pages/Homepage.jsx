@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import HeroSection from "../components/HeroSection";
 import TrendingBooks from "../components/TrendingBooks";
-import FilterSidebar from "../components/FilterSidebar";
 import AllBooks from "../components/AllBooks";
 
 const Homepage = () => {

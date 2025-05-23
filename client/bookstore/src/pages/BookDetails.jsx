@@ -173,7 +173,7 @@ const BookDetails = () => {
                     <Card.Body>
                       <h6 className="mb-2">Genre</h6>
                       <p className="mb-0 text-muted">
-                        {book.genre} / {book.subgenre}
+                        {book.genre} / {book.sub_genre}
                       </p>
                     </Card.Body>
                   </Card>
