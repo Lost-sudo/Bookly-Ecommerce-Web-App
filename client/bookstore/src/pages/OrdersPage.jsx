@@ -56,7 +56,7 @@ const OrdersPage = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/orders/`,
+        `https://bookly-ecommerce-web-app-1.onrender.com/api/orders/`,
         {
           headers: { Authorization: `Bearer ${authTokens.access}` },
         }
