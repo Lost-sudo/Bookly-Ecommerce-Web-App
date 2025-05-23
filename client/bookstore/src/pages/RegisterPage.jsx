@@ -146,7 +146,7 @@ const RegisterPage = () => {
                             })
                           }
                           required
-                          className="bg-transparent text-light border-start-0"
+                          className="bg-transparent text-light border-start custom-placeholder"
                           style={{
                             boxShadow: "none",
                             borderColor: "rgba(75, 139, 190, 0.2)",
