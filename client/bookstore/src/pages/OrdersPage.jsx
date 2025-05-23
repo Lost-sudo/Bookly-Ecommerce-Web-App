@@ -55,29 +55,34 @@ const OrdersPage = () => {
     if (!authTokens) return;
     setLoading(true);
     try {
-      // Use environment variable for API URL, consistent with other pages
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/orders/`, // <-- ensure this matches backend
+        `${import.meta.env.VITE_API_URL}/api/orders/`,
         {
           headers: { Authorization: `Bearer ${authTokens.access}` },
         }
       );
       // Debug log to inspect the response
-      // console.log("Fetched orders:", res.data);
+      console.log("Fetched orders raw response:", res.data);
       let ordersData = Array.isArray(res.data)
         ? res.data
         : res.data.results || [];
       // If you use pagination, DRF returns { results: [...] }
       // Otherwise, it's just an array
-      // console.log("Orders data:", ordersData);
+      console.log("Orders data (parsed):", ordersData);
       const sortedOrders = ordersData.sort(
         (a, b) => new Date(b.order_date) - new Date(a.order_date)
       );
       setOrders(sortedOrders);
       setError(null);
     } catch (err) {
-      setError("Failed to load orders. Please try again.");
-      console.error("Error fetching orders:", err);
+      // Show backend error message if available
+      let backendMsg =
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        JSON.stringify(err.response?.data) ||
+        err.message;
+      setError("Failed to load orders. " + backendMsg);
+      console.error("Error fetching orders:", err, err.response?.data);
     } finally {
       setLoading(false);
     }

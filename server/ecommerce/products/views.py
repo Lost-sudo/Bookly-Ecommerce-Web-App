@@ -33,18 +33,18 @@ class BookViewSet(viewsets.ReadOnlyModelViewSet):
                     "category": "Programming",
                     "genre": "Technology",
                     "sub_genre": "Software Engineering",
-                    "cover_image": "https://covers.openlibrary.org/b/id/10523365-L.jpg"
+                    "cover_image": "https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/tpp20.jpg"
                 },
                 {
                     "id": 1002,
-                    "title": "Clean Code",
+                    "title": "z ",
                     "author": "Robert C. Martin",
                     "description": "A Handbook of Agile Software Craftsmanship.",
                     "price": "950.00",
                     "category": "Programming",
                     "genre": "Technology",
                     "sub_genre": "Software Engineering",
-                    "cover_image": "https://covers.openlibrary.org/b/id/9641981-L.jpg"
+                    "cover_image": "blob:https://www.kobo.com/86cf7011-a17c-4306-bea5-1886a41f7609"
                 },
                 {
                     "id": 1003,
@@ -55,7 +55,7 @@ class BookViewSet(viewsets.ReadOnlyModelViewSet):
                     "category": "Self-Help",
                     "genre": "Nonfiction",
                     "sub_genre": "Personal Development",
-                    "cover_image": "https://covers.openlibrary.org/b/id/10523366-L.jpg"
+                    "cover_image": "blob:https://www.kobo.com/7d92cbd0-77bd-4e73-8d28-78d62cf0cb64"
                 },
                 # ...add more sample products as needed...
             ]
