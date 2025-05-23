@@ -97,7 +97,7 @@ const BookCard = ({ id, cover, title, author, price, onAddToCart }) => {
             </div>
             <div className="book-footer">
               <span className="book-price" style={{ color: "#4b8bbe" }}>
-                ₱{typeof price === "number" ? price.toFixed(2) : "0.00"}
+                ₱{price}
               </span>
               <motion.div
                 whileTap={{ scale: 0.95 }}
