@@ -8,6 +8,7 @@ from .models import Order
 from .serializers import OrderSerializer
 from accounts.permissions import isCustomer
 from cart.models import Cart
+from rest_framework.views import APIView
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +50,14 @@ class OrderViewSet(viewsets.ModelViewSet):
             raise
 
     queryset = Order.objects.prefetch_related('cart__items__book').all()
+
+class OrderListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        orders = Order.objects.filter(user=request.user)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
 
 
 

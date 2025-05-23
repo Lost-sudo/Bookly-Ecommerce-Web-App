@@ -56,7 +56,7 @@ const OrdersPage = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/orders/`,
+        `${import.meta.env.VITE_API_URL}/api/orders/`, // Ensure this matches the backend URL
         {
           headers: { Authorization: `Bearer ${authTokens.access}` },
         }
