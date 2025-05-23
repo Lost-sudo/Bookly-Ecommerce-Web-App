@@ -24,8 +24,12 @@ class OrderViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(user=user)
     
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        order = serializer.save(user=self.request.user)
         logger.info(f"Order created for user {self.request.user.username}")
+        # Clear the user's cart after successful order creation
+        cart = getattr(order, 'cart', None)
+        if cart:
+            cart.clear_cart()
 
 
 
