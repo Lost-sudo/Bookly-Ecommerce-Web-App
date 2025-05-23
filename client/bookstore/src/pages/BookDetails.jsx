@@ -27,7 +27,16 @@ const BookDetails = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/books/${id}/`
         );
-        setBook(response.data);
+        const data = response.data;
+
+        // Add fallback values for missing fields
+        setBook({
+          ...data,
+          description: data.description || "No description available.",
+          genre: data.genre || "Unknown",
+          sub_genre: data.sub_genre || "Unknown",
+          category: data.category || "Uncategorized",
+        });
       } catch (error) {
         setAlert({
           show: true,
@@ -146,7 +155,7 @@ const BookDetails = () => {
               transition={{ delay: 0.3 }}
             >
               <h2 className="mb-2">{book.title}</h2>
-              <p className="text-muted mb-4">by {book.author}</p>
+              <p className="text-muted mb-4">by {book.author || "Unknown Author"}</p>
 
               <div className="mb-4">
                 <h4 className="text-primary mb-3">₱{book.price}</h4>
@@ -175,15 +184,7 @@ const BookDetails = () => {
               <Card className="bg-dark border border-secondary glass-effect mb-4">
                 <Card.Body>
                   <h5 className="mb-3">Description</h5>
-                  <p className="text-muted mb-0">
-                    {book.description && book.description.trim() ? (
-                      book.description
-                    ) : (
-                      <span className="fst-italic text-secondary">
-                        No description available.
-                      </span>
-                    )}
-                  </p>
+                  <p className="text-muted mb-0">{book.description}</p>
                 </Card.Body>
               </Card>
 
