@@ -21,6 +21,10 @@ class BookCustomerSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 class BookSerializer(serializers.ModelSerializer):
+    genre = serializers.StringRelatedField()
+    sub_genre = serializers.StringRelatedField()
+    category = serializers.StringRelatedField()
+
     class Meta:
         model = Book
         fields = [
