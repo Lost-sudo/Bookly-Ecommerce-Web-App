@@ -50,7 +50,8 @@ const OrdersPage = () => {
                     {new Date(order.order_date).toLocaleString()}
                   </p>
                   <p>
-                    <strong>Total:</strong> ₱{order.total_amount.toFixed(2)}
+                    <strong>Total:</strong> ₱
+                    {Number(order.total_amount).toFixed(2)}
                   </p>
                   <p>
                     <strong>Status:</strong> {order.order_status}
