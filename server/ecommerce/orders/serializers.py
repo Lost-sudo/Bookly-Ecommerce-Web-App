@@ -20,10 +20,10 @@ class CartItemOrderSerializer(serializers.ModelSerializer):
         fields = ['id', 'book', 'quantity']
 
 class OrderSerializer(serializers.ModelSerializer):
-    cart_items = CartItemSerializer(many=True, read_only=True)  # Include cart items
-    full_name = serializers.CharField(source='user.get_full_name', read_only=True)
-    phone_number = serializers.CharField(source='user.phone_number', read_only=True)
-    address = serializers.CharField(source='user.address', read_only=True)
+    cart_items = CartItemOrderSerializer(many=True, read_only=True)  # Include cart items
+    full_name = serializers.CharField()
+    phone_number = serializers.CharField()
+    address = serializers.CharField()
 
     class Meta:
         model = Order

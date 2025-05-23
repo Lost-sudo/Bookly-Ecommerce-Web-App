@@ -10,10 +10,11 @@ from accounts.permissions import isCustomer
 from cart.models import Cart
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.mixins import CreateModelMixin
 
 logger = logging.getLogger(__name__)
 
-class OrderViewSet(ReadOnlyModelViewSet):
+class OrderViewSet(ReadOnlyModelViewSet, CreateModelMixin):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated, isCustomer]
     queryset = Order.objects.select_related('user').prefetch_related('cart_items__book')
@@ -23,29 +24,8 @@ class OrderViewSet(ReadOnlyModelViewSet):
         return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        # Get or create cart for the user
-        cart = Cart.objects.filter(user=self.request.user).first()
-        
-        # Log the order creation attempt
-        logger.info(f"Creating order for user {self.request.user.username}")
-        logger.info(f"Order data: {self.request.data}")
-        
-        try:
-            # Save the order with the user and cart
-            serializer.save(
-                user=self.request.user,
-                cart=cart
-            )
-            
-            # Clear the cart after successful order creation
-            if cart:
-                cart.clear_cart()
-                
-            logger.info(f"Order created successfully for user {self.request.user.username}")
-            
-        except Exception as e:
-            logger.error(f"Order creation failed: {str(e)}", exc_info=True)
-            raise
+        # Save the order with the user
+        serializer.save(user=self.request.user)
 
 
 
