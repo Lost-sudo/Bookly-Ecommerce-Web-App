@@ -108,30 +108,38 @@
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-  height: 34px;
+  height: 40px; /* Increased height for better spacing */
+  padding-top: 0.5rem; /* Added padding for better alignment */
+  border-top: 1px solid var(--color-border); /* Separator for footer */
 }
 
 .book-price {
-  font-size: 1.05rem;
+  font-size: 1.1rem; /* Slightly larger font size */
   font-weight: 700;
   color: var(--color-primary);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
+  margin-right: 0.5rem; /* Added margin for spacing */
 }
 
 .cart-button {
-  padding: 0.35rem 0.9rem;
-  border-radius: 18px;
-  font-size: 0.92rem;
+  padding: 0.4rem 1rem; /* Adjusted padding for better size */
+  border-radius: 20px; /* More rounded button */
+  font-size: 0.95rem; /* Slightly larger font size */
   background: linear-gradient(90deg, #4b8bbe 0%, #306998 100%);
   color: #fff;
   border: none;
-  box-shadow: 0 1px 4px rgba(60, 72, 88, 0.08);
-  transition: background 0.2s, box-shadow 0.2s;
-  min-width: 70px;
+  box-shadow: 0 2px 6px rgba(60, 72, 88, 0.15); /* Enhanced shadow */
+  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
+}
+
+.cart-button:hover:not(:disabled) {
+  background: linear-gradient(90deg, #306998 0%, #4b8bbe 100%);
+  box-shadow: 0 4px 12px rgba(60, 72, 88, 0.2); /* Stronger shadow on hover */
+  transform: translateY(-2px); /* Slight lift effect */
 }
 
 .cart-button:disabled,
@@ -139,17 +147,13 @@
   background: #b2bec3;
   color: #fff;
   opacity: 0.8;
-}
-
-.cart-button:hover:not(:disabled) {
-  background: linear-gradient(90deg, #306998 0%, #4b8bbe 100%);
-  box-shadow: 0 2px 8px rgba(60, 72, 88, 0.12);
+  cursor: not-allowed;
 }
 
 /* Spinner */
 .spinner-border {
-  width: 1rem;
-  height: 1rem;
+  width: 1.2rem; /* Slightly larger spinner */
+  height: 1.2rem;
   border-width: 0.15em;
 }
 
