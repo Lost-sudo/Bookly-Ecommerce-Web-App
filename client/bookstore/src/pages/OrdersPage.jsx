@@ -56,18 +56,20 @@ const OrdersPage = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/orders/`, // This is correct
+        `${import.meta.env.VITE_API_URL}/api/orders/`,
         {
           headers: { Authorization: `Bearer ${authTokens.access}` },
         }
       );
       // Debug log to inspect the response
       // console.log("Fetched orders:", res.data);
-      // Add this line to inspect the first order's keys
-      // if (Array.isArray(res.data) && res.data.length > 0) {
-      //   console.log("Order keys:", Object.keys(res.data[0]));
-      // }
-      const sortedOrders = res.data.sort(
+      let ordersData = Array.isArray(res.data)
+        ? res.data
+        : res.data.results || [];
+      // If you use pagination, DRF returns { results: [...] }
+      // Otherwise, it's just an array
+      // console.log("Orders data:", ordersData);
+      const sortedOrders = ordersData.sort(
         (a, b) => new Date(b.order_date) - new Date(a.order_date)
       );
       setOrders(sortedOrders);
@@ -156,7 +158,10 @@ const OrderSection = ({
 );
 
 const OrderCard = ({ order, index }) => {
-  const items = Array.isArray(order.cart_items) ? order.cart_items : [];
+  // Defensive: fallback for cart_items
+  const items = Array.isArray(order.cart_items)
+    ? order.cart_items
+    : order.cart_items?.results || [];
 
   // Fallbacks for user info
   const fullName =

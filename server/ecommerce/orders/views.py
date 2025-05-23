@@ -49,15 +49,5 @@ class OrderViewSet(viewsets.ModelViewSet):
             logger.error(f"Order creation failed: {str(e)}", exc_info=True)
             raise
 
-    queryset = Order.objects.prefetch_related('cart__items__book').all()
-
-class OrderListView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        orders = Order.objects.filter(user=request.user)
-        serializer = OrderSerializer(orders, many=True)
-        return Response(serializer.data)
-
 
 

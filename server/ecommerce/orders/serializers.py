@@ -81,5 +81,7 @@ class OrderSerializer(serializers.ModelSerializer):
         return getattr(obj.user, 'address', '')
 
     def get_cart_items(self, obj):
+        if not obj.cart:
+            return []
         cart_items = CartItem.objects.filter(cart=obj.cart)
         return CartItemSerializer(cart_items, many=True).data
