@@ -3,6 +3,8 @@ from .models import Book
 
 class BookAdminSerializer(serializers.ModelSerializer):
     cover_image = serializers.ImageField(required=False, allow_null=True)
+    genre = serializers.CharField(source='genre.name', read_only=True)
+    sub_genre = serializers.CharField(source='sub_genre.name', read_only=True)
 
     class Meta:
         model = Book

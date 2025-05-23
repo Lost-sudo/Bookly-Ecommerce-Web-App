@@ -1,16 +1,28 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Row, Col, ButtonGroup, Button, Form, Offcanvas } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  ButtonGroup,
+  Button,
+  Form,
+  Offcanvas,
+} from "react-bootstrap";
 import BookCard from "./BookCard";
 import FilterSidebar from "./FilterSidebar";
 import { FaTh, FaBars, FaSearch, FaFilter } from "react-icons/fa";
 import { fetchAllBooks } from "../api/bookAPI.js";
+import { useLocation } from "react-router-dom"; // Import useLocation
 
 const AllBooks = () => {
+  const location = useLocation(); // Get the current location
+  const queryParams = new URLSearchParams(location.search); // Parse query parameters
+  const searchQuery = queryParams.get("search") || ""; // Get the 'search' parameter
+
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(searchQuery); // Initialize with searchQuery
   const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
@@ -25,6 +37,10 @@ const AllBooks = () => {
     };
     fetchBooks();
   }, []);
+
+  useEffect(() => {
+    setSearchTerm(searchQuery); // Update searchTerm when the URL changes
+  }, [searchQuery]);
 
   // Extract unique genres and authors from books
   const genres = useMemo(

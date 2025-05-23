@@ -19,7 +19,7 @@ class BookViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = BookFilter
-    search_fields = ['title', 'author', 'description']
+    search_fields = ['title', 'author', 'description', 'genre__name', 'sub_genre__name']
 
     @action(detail=False, methods=['get'], url_path='trending')
     def trending_books(self, request):
