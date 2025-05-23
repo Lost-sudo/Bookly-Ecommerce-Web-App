@@ -152,7 +152,10 @@ const BookDetails = () => {
 
               <div className="mb-4">
                 <h4 className="text-primary mb-3">
-                  ₱{book.price?.toFixed(2) || "0.00"}
+                  ₱
+                  {typeof book.price === "number"
+                    ? book.price.toFixed(2)
+                    : "0.00"}
                 </h4>
                 <Button
                   variant={isAdded ? "success" : "primary"}

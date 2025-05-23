@@ -100,7 +100,7 @@ const CheckOutPage = () => {
   };
 
   const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.book.price * item.quantity,
+    (sum, item) => sum + (item.book.price || 0) * item.quantity,
     0
   );
   const total = subtotal + shipping;
@@ -331,7 +331,12 @@ const CheckOutPage = () => {
                   <hr className="border-secondary" />
                   <div className="d-flex justify-content-between mb-2">
                     <span className="text-muted">Subtotal</span>
-                    <span>₱{subtotal.toFixed(2)}</span>
+                    <span>
+                      ₱
+                      {typeof subtotal === "number"
+                        ? subtotal.toFixed(2)
+                        : "0.00"}
+                    </span>
                   </div>
                   <div className="d-flex justify-content-between mb-3">
                     <span className="text-muted">Shipping</span>
@@ -341,7 +346,7 @@ const CheckOutPage = () => {
                   <div className="d-flex justify-content-between mb-4">
                     <span className="fw-bold">Total</span>
                     <span className="fw-bold text-primary fs-5">
-                      ₱{total.toFixed(2)}
+                      ₱{typeof total === "number" ? total.toFixed(2) : "0.00"}
                     </span>
                   </div>
                   <Button

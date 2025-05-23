@@ -274,7 +274,10 @@ const OrderCard = ({ order, index }) => {
             <div>
               <small className="text-muted">Order Total</small>
               <h5 className="mb-0 fw-bold text-primary">
-                ₱{parseFloat(order.total_amount || 0).toFixed(2)}
+                ₱
+                {typeof order.total_amount === "number"
+                  ? order.total_amount.toFixed(2)
+                  : "0.00"}
               </h5>
             </div>
             <div className="text-end">
