@@ -247,6 +247,14 @@ const OrderCard = ({ order, index }) => {
                     <Col>
                       <div>
                         <h6 className="mb-1 fw-semibold">{item.book.title}</h6>
+                        <img
+                          src={
+                            item.book.cover_image
+                              ? `/images/${item.book.cover_image}`
+                              : "/images/default-cover.jpg"
+                          }
+                          alt={item.book.title}
+                        />
                         <p className="text-muted mb-0 small">
                           {item.book.author}
                         </p>

@@ -458,3 +458,10 @@ html {
   color: #bbb !important;
   opacity: 1;
 }
+
+.book-cover {
+  background-color: #f0f0f0;
+  background-image: url("/images/default-cover.jpg");
+  background-size: cover;
+  background-position: center;
+}

@@ -91,8 +91,8 @@ function TrendingBooks() {
                         price={book.price}
                         cover={
                           book.cover_image
-                            ? book.cover_image.replace(/^http:\/\//, "https://")
-                            : book.cover_image
+                            ? `/images/${book.cover_image}`
+                            : "/images/default-cover.jpg"
                         }
                         onAddToCart={handleAddToCart}
                       />

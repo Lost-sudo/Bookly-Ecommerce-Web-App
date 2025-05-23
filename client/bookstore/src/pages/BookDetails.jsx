@@ -128,8 +128,8 @@ const BookDetails = () => {
                   variant="top"
                   src={
                     book.cover_image
-                      ? book.cover_image.replace(/^http:\/\//, "https://")
-                      : book.cover_image
+                      ? `/images/${book.cover_image}`
+                      : "/images/default-cover.jpg"
                   }
                   alt={book.title || "Book Cover"}
                   className="img-fluid rounded"

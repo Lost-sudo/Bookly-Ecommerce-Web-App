@@ -162,8 +162,8 @@ const GenreBook = () => {
                       id={book.id}
                       cover={
                         book.cover_image
-                          ? book.cover_image.replace(/^http:\/\//, "https://")
-                          : book.cover_image
+                          ? `/images/${book.cover_image}`
+                          : "/images/default-cover.jpg"
                       }
                       title={book.title}
                       author={book.author}
