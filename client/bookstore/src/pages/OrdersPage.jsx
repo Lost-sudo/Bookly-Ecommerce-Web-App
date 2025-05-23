@@ -14,14 +14,29 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaHourglassHalf,
+  FaTruck,
+  FaBoxOpen,
 } from "react-icons/fa";
 
 const statusStyles = {
-  pending: { variant: "warning", icon: <FaHourglassHalf className="me-1" /> },
-  completed: { variant: "success", icon: <FaCheckCircle className="me-1" /> },
-  cancelled: { variant: "danger", icon: <FaTimesCircle className="me-1" /> },
-  // Add more statuses as needed
+  pending: {
+    variant: "warning",
+    icon: <FaHourglassHalf className="me-1" />,
+  },
+  shipped: {
+    variant: "info",
+    icon: <FaTruck className="me-1" />,
+  },
+  delivered: {
+    variant: "success",
+    icon: <FaCheckCircle className="me-1" />,
+  },
+  cancelled: {
+    variant: "danger",
+    icon: <FaTimesCircle className="me-1" />,
+  },
 };
+
 
 const paymentIcons = {
   cash: <FaMoneyBillWave className="me-1" color="#28a745" />,
@@ -60,120 +75,128 @@ const OrdersPage = () => {
   if (error) return <Alert variant="danger">{error}</Alert>;
 
   return (
-    <Container
-      className="py-5"
-      style={{ minHeight: "100vh", background: "#f8f9fa" }}
-    >
-      <h2
-        className="mb-4"
-        style={{ fontWeight: 700, color: "#343a40" }}
-      >
+    <Container className="py-5" style={{ minHeight: "100vh" }}>
+      <h2 className="mb-4 text-light fw-bold">
         <FaShoppingCart className="me-2" />
         Your Orders
       </h2>
-      {orders.length === 0 ? (
-        <p>No orders found.</p>
+
+      {loading ? (
+        <div className="text-center text-light">
+          <Spinner animation="border" />
+        </div>
+      ) : error ? (
+        <Alert variant="danger">{error}</Alert>
+      ) : orders.length === 0 ? (
+        <p className="text-light">You have no orders yet.</p>
       ) : (
-        orders.map((order) => {
-          const status = order.order_status?.toLowerCase() || "pending";
-          const statusInfo = statusStyles[status] || statusStyles["pending"];
+        Object.keys(statusStyles).map((statusKey) => {
+          const groupedOrders = orders.filter(
+            (order) => order.order_status?.toLowerCase() === statusKey
+          );
+
+          if (groupedOrders.length === 0) return null;
+
+          const { icon, variant } = statusStyles[statusKey];
+          const capitalizedStatus =
+            statusKey.charAt(0).toUpperCase() + statusKey.slice(1);
+
           return (
-            <Card
-              key={order.id}
-              className="mb-4 shadow-sm"
-              style={{
-                borderLeft: `6px solid var(--bs-${statusInfo.variant})`,
-                background: "#fff",
-                borderRadius: "1rem",
-              }}
-            >
-              <Card.Body>
-                <Row>
-                  <Col md={8}>
-                    <h5 style={{ fontWeight: 600 }}>
-                      <FaClock className="me-2 text-secondary" />
-                      Order #{order.id}
-                    </h5>
-                    <p>
-                      <strong>Date:</strong>{" "}
-                      {new Date(order.order_date).toLocaleString()}
-                    </p>
-                    <p>
-                      <strong>Total:</strong>{" "}
-                      <span style={{ color: "#28a745", fontWeight: 600 }}>
-                        ₱{Number(order.total_amount).toFixed(2)}
-                      </span>
-                    </p>
-                    <p>
-                      <strong>Status:</strong>{" "}
-                      <Badge
-                        bg={statusInfo.variant}
-                        className="px-3 py-2 fs-6"
-                      >
-                        {statusInfo.icon}
-                        {order.order_status}
-                      </Badge>
-                    </p>
-                    <p>
-                      <strong>Payment:</strong>{" "}
-                      {
-                        paymentIcons[order.payment_type?.toLowerCase()] || (
-                          <FaCreditCard className="me-1" />
-                        )
-                      }
-                      {order.payment_type}
-                    </p>
-                    <p>
-                      <FaUser className="me-1 text-primary" />
-                      <strong>Full Name:</strong> {order.full_name}
-                    </p>
-                    <p>
-                      <FaPhone className="me-1 text-info" />
-                      <strong>Phone:</strong> {order.phone_number}
-                    </p>
-                    <p>
-                      <FaMapMarkerAlt className="me-1 text-danger" />
-                      <strong>Address:</strong> {order.address}
-                    </p>
-                  </Col>
-                  <Col md={4}>
-                    <h6 className="mb-2" style={{ fontWeight: 600 }}>
-                      <FaShoppingCart className="me-2" />
-                      Cart Items
-                    </h6>
-                    <div
-                      style={{
-                        background: "#f1f3f4",
-                        borderRadius: "0.5rem",
-                        padding: "0.5rem",
-                      }}
-                    >
-                      {order.cart_items.map((item) => (
-                        <div
-                          key={item.id}
-                          className="d-flex align-items-center mb-2"
-                        >
-                          <span
-                            className="me-2"
-                            style={{ fontWeight: 500 }}
-                          >
-                            {item.book.title}
+            <div key={statusKey} className="mb-5">
+              <h4
+                className={`fw-bold mb-3 text-${variant}`}
+                style={{ borderBottom: `2px solid var(--bs-${variant})` }}
+              >
+                {icon} {capitalizedStatus} Orders
+              </h4>
+
+              {groupedOrders.map((order) => (
+                <Card
+                  key={order.id}
+                  className="mb-4 shadow-sm"
+                  bg="dark"
+                  text="light"
+                  style={{
+                    borderLeft: `6px solid var(--bs-${variant})`,
+                    borderRadius: "1rem",
+                  }}
+                >
+                  <Card.Body>
+                    <Row>
+                      <Col md={8}>
+                        <h5 className="fw-semibold">
+                          <FaClock className="me-2 text-secondary" />
+                          Order #{order.id}
+                        </h5>
+                        <p>
+                          <strong>Date:</strong>{" "}
+                          {new Date(order.order_date).toLocaleString()}
+                        </p>
+                        <p>
+                          <strong>Total:</strong>{" "}
+                          <span className="text-success fw-bold">
+                            ₱{Number(order.total_amount).toFixed(2)}
                           </span>
-                          <Badge bg="secondary" pill>
-                            × {item.quantity}
+                        </p>
+                        <p>
+                          <strong>Status:</strong>{" "}
+                          <Badge bg={variant} className="px-3 py-2 fs-6">
+                            {icon}
+                            {order.order_status}
                           </Badge>
+                        </p>
+                        <p>
+                          <strong>Payment:</strong>{" "}
+                          {paymentIcons[order.payment_type?.toLowerCase()] || (
+                            <FaCreditCard className="me-1" />
+                          )}
+                          {order.payment_type}
+                        </p>
+                        <p>
+                          <FaUser className="me-1 text-primary" />
+                          <strong>Full Name:</strong> {order.full_name}
+                        </p>
+                        <p>
+                          <FaPhone className="me-1 text-info" />
+                          <strong>Phone:</strong> {order.phone_number}
+                        </p>
+                        <p>
+                          <FaMapMarkerAlt className="me-1 text-danger" />
+                          <strong>Address:</strong> {order.address}
+                        </p>
+                      </Col>
+                      <Col md={4}>
+                        <h6 className="mb-2 fw-semibold">
+                          <FaBoxOpen className="me-2" />
+                          Cart Items
+                        </h6>
+                        <div className="bg-secondary bg-opacity-25 p-3 rounded">
+                          {order.cart_items.map((item) => (
+                            <div
+                              key={item.id}
+                              className="d-flex align-items-center mb-2"
+                            >
+                              <span className="me-2 fw-medium">
+                                {item.book.title}
+                              </span>
+                              <Badge bg="light" text="dark" pill>
+                                × {item.quantity}
+                              </Badge>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              ))}
+            </div>
           );
         })
       )}
     </Container>
   );
+  
 };
 
 export default OrdersPage;
