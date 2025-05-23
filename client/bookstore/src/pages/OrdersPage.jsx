@@ -69,7 +69,10 @@ const OrdersPage = () => {
                     <strong>Address:</strong> {order.address}
                   </p>
                   <h6>Cart Items:</h6>
-                  {order.cart_items.map((item) => (
+                  {(Array.isArray(order.cart_items)
+                    ? order.cart_items
+                    : []
+                  ).map((item) => (
                     <div key={item.id}>
                       <p>
                         {item.book.title} × {item.quantity}

@@ -39,6 +39,13 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'order_date', 'user']
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # Ensure cart_items is always a list
+        if data.get('cart_items') is None:
+            data['cart_items'] = []
+        return data
+
     def create(self, validated_data):
         logger.info(f"Creating order with data: {validated_data}")
         return super().create(validated_data)
