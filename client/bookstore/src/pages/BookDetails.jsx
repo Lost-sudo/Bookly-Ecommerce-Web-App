@@ -131,7 +131,7 @@ const BookDetails = () => {
                       ? book.cover_image.replace(/^http:\/\//, "https://")
                       : book.cover_image
                   }
-                  alt={book.title}
+                  alt={book.title || "Book Cover"}
                   className="img-fluid rounded"
                   style={{ aspectRatio: "2/3", objectFit: "cover" }}
                 />
@@ -145,11 +145,15 @@ const BookDetails = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <h2 className="mb-2">{book.title}</h2>
-              <p className="text-muted mb-4">by {book.author}</p>
+              <h2 className="mb-2">{book.title || "Untitled Book"}</h2>
+              <p className="text-muted mb-4">
+                by {book.author || "Unknown Author"}
+              </p>
 
               <div className="mb-4">
-                <h4 className="text-primary mb-3">₱{book.price}</h4>
+                <h4 className="text-primary mb-3">
+                  ₱{book.price?.toFixed(2) || "0.00"}
+                </h4>
                 <Button
                   variant={isAdded ? "success" : "primary"}
                   className="px-4 py-2"
@@ -193,7 +197,8 @@ const BookDetails = () => {
                     <Card.Body>
                       <h6 className="mb-2">Genre</h6>
                       <p className="mb-0 text-muted">
-                        {book.genre} / {book.sub_genre}
+                        {book.genre || "Unknown Genre"} /{" "}
+                        {book.sub_genre || "Unknown Sub-Genre"}
                       </p>
                     </Card.Body>
                   </Card>
@@ -202,7 +207,9 @@ const BookDetails = () => {
                   <Card className="bg-dark border border-secondary glass-effect h-100">
                     <Card.Body>
                       <h6 className="mb-2">Category</h6>
-                      <p className="mb-0 text-muted">{book.category}</p>
+                      <p className="mb-0 text-muted">
+                        {book.category || "Unknown Category"}
+                      </p>
                     </Card.Body>
                   </Card>
                 </Col>
