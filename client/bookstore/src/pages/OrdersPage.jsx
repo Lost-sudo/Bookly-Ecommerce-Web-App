@@ -7,7 +7,6 @@ import {
   Alert,
   Badge,
   Form,
-  Button,
 } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext.jsx";
 import axios from "axios";
@@ -135,16 +134,6 @@ const OrdersPage = () => {
               ))}
             </Form.Select>
           </Form.Group>
-          <Button
-            variant="outline-secondary"
-            className="ms-0 ms-md-2"
-            onClick={() => {
-              setStatusFilter("all");
-              setPaymentFilter("all");
-            }}
-          >
-            Reset
-          </Button>
         </Form>
       </div>
       {filteredOrders.length === 0 ? (
