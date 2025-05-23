@@ -9,8 +9,11 @@ User = get_user_model()
 
 class BookOrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Book
-        fields = ['id', 'title', 'author', 'price']
+        model = Order
+        fields = [
+            'id', 'total_amount', 'payment_type', 'transaction_id',
+            'full_name', 'phone_number', 'address'
+        ]
 
 class CartItemOrderSerializer(serializers.ModelSerializer):
     book = BookOrderSerializer()
