@@ -53,21 +53,21 @@ class OrderSerializer(serializers.ModelSerializer):
         address = validated_data.pop('address', None)
         user = self.context['request'].user
         updated = False
-        if full_name and user.full_name != full_name:
+        if full_name and getattr(user, 'full_name', None) != full_name:
             user.full_name = full_name
             updated = True
-        if phone_number and user.phone_number != phone_number:
+        if phone_number and getattr(user, 'phone_number', None) != phone_number:
             user.phone_number = phone_number
             updated = True
-        if address and user.address != address:
+        if address and getattr(user, 'address', None) != address:
             user.address = address
             updated = True
         if updated:
             user.save()
         # --- Save user info snapshot on the order ---
-        validated_data['full_name'] = full_name or user.full_name
-        validated_data['phone_number'] = phone_number or user.phone_number
-        validated_data['address'] = address or user.address
+        validated_data['full_name'] = full_name or getattr(user, 'full_name', '')
+        validated_data['phone_number'] = phone_number or getattr(user, 'phone_number', '')
+        validated_data['address'] = address or getattr(user, 'address', '')
         # --- end add ---
         return super().create(validated_data)
 
@@ -84,4 +84,4 @@ class OrderSerializer(serializers.ModelSerializer):
         if not obj.cart:
             return []
         cart_items = CartItem.objects.filter(cart=obj.cart)
-        return CartItemSerializer(cart_items, many=True).data
+        return CartItemOrderSerializer(cart_items, many=True).data
