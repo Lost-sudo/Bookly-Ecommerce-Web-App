@@ -55,8 +55,9 @@ const OrdersPage = () => {
     if (!authTokens) return;
     setLoading(true);
     try {
+      // Use environment variable for API URL, consistent with other pages
       const res = await axios.get(
-        `https://bookly-ecommerce-web-app-1.onrender.com/api/orders/`,
+        `${import.meta.env.VITE_API_URL}/api/orders/`, // <-- ensure this matches backend
         {
           headers: { Authorization: `Bearer ${authTokens.access}` },
         }

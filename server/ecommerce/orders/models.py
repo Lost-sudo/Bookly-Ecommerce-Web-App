@@ -36,7 +36,8 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Order #{self.id} by {self.user.username} - {self.order_status}"
+        username = getattr(self.user, 'username', 'Unknown')
+        return f"Order #{self.id} by {username} - {self.order_status}"
 
     def update_order_status(self, status):
         if status in dict(self.STATUS_CHOICES).keys():
