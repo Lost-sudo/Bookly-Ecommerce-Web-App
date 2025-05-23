@@ -13,7 +13,7 @@ class BookCustomerSerializer(serializers.ModelSerializer):
     genre = serializers.StringRelatedField()
     sub_genre = serializers.StringRelatedField()
     category = serializers.StringRelatedField()
-    cover_image = serializers.ImageField(read_only=True)
+    cover_image = serializers.ImageField(read_only=True)  # Correctly configured
 
     class Meta:
         model = Book

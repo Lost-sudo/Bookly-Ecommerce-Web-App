@@ -35,4 +35,4 @@ class BookAdminViewSet(viewsets.ModelViewSet):
 
 class BookDetailView(RetrieveAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    serializer_class = BookCustomerSerializer
