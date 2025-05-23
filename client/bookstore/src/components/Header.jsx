@@ -367,7 +367,8 @@ function Header() {
               onClick={() => setShowOffcanvas(false)}
             >
               <FaShoppingCart className="me-2" />
-              Cart {cartCount > 0 && <Badge bg="primary">{cartCount}</Badge>}
+              Cart{" "}
+              {cartCount > 0 && <Badge bg="primary">{cartCount}</Badge>}
             </Nav.Link>
             <Nav.Link
               as={Link}
