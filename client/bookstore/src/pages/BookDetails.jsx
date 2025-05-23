@@ -129,7 +129,7 @@ const BookDetails = () => {
                   src={
                     book.cover_image
                       ? book.cover_image.replace(/^http:\/\//, "https://")
-                      : book.cover_image
+                      : "https://via.placeholder.com/150" // Fallback image
                   }
                   alt={book.title}
                   className="img-fluid rounded"
